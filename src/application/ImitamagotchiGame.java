@@ -67,13 +67,14 @@ public class ImitamagotchiGame extends Application {
 	    hbox.getChildren().add(this.makeActionButton("Rest",40));
 	    hbox.getChildren().add(this.makeActionButton("Bathroom",70));
 	    hbox.getChildren().add(this.makeActionButton("Dye Hair",65));
-	    hbox.getChildren().add(this.makeActionButton("Play Sports",75));
+	    hbox.getChildren().add(this.makeActionButton("Exercise",75));
 	    hbox.getChildren().add(this.makeActionButton("Remove Mask",95));
 	    hbox.getChildren().add(this.makeActionButton("Wash Self",70));
+	    hbox.getChildren().add(this.makeActionButton("Smoke",65));
 	    
 	    
 	    hbox.getChildren().add(this.makeActionButton("See Friends",80));// TODO: dropdown
-
+	    hbox.getChildren().add(this.makeActionButton("Reproduce",80));// TODO: dropdown
 	    return hbox;
 	}
 	

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+
+
+
+<HBox
+	xmlns:fx="http://javafx.co/fxml/1"
+	class="Animalregion">
+	<children>
+		<ImageView
+			fitHeight="150.0"
+			fitWidth="200.0" >
+		</ImageView>
+	</children>
+	
+	
+<stylesheets>
+    <URL value="@AnimalRegion.css" />
+</stylesheets>
+</HBox>
+
