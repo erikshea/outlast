@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.HBox?>
-
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import fxml.TooltipUtil?>
 
 
 <HBox
 	xmlns:fx="http://javafx.co/fxml/1"
-	class="Animalregion">
+	styleClass = "test"
+	>
 	<children>
-		<ImageView
-			fitHeight="150.0"
-			fitWidth="200.0" >
+		<ImageView fitHeight="100" pickOnBounds="true" preserveRatio="true"  >
+           <image>
+              <Image url="@../../resources/images/species/cat.png" />
+           </image>
 		</ImageView>
 	</children>
-	
-	
-<stylesheets>
-    <URL value="@AnimalRegion.css" />
-</stylesheets>
+
 </HBox>
 

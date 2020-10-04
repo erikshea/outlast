@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import fxml.TooltipUtil?>
+
+
+<HBox
+	xmlns:fx="http://javafx.co/fxml/1"
+	class="animal-region">
+	<children>
+		<ImageView class="animal-type" fitHeight="100" pickOnBounds="true" preserveRatio="true"  >
+           <image>
+              <Image url="@../../resources/images/species/cat.png" />
+           </image>
+
+		</ImageView>
+		<ImageView class="animal-action" fitHeight="100" pickOnBounds="true" preserveRatio="true"  >
+           <image>
+              <Image url="@../../resources/images/actions/ear.png" />
+           </image>
+           <TooltipUtil.tooltip>
+               <Tooltip text="Eat" />
+           </TooltipUtil.tooltip>
+		</ImageView>
+		<ImageView class="animal-action" fitHeight="100" pickOnBounds="true" preserveRatio="true"  >
+           <image>
+              <Image url="@../../resources/images/species/bathroom.png" />
+           </image>
+           <TooltipUtil.tooltip>
+               <Tooltip text="Go to the bathroom" />
+           </TooltipUtil.tooltip>
+		</ImageView>
+		<ImageView class="animal-action" fitHeight="100" pickOnBounds="true" preserveRatio="true"  >
+           <image>
+              <Image url="@../../resources/images/species/exercise.png" />
+           </image>
+           <TooltipUtil.tooltip>
+               <Tooltip text="Perform exercise" />
+           </TooltipUtil.tooltip>
+		</ImageView>
+
+	</children>
+	
+	
+<stylesheets>
+    <URL value="@AnimalRegion.css" />
+</stylesheets>
+</HBox>
+

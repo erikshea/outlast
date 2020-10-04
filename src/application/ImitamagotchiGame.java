@@ -1,6 +1,8 @@
 package application;
-
+import animals.*;
+import regions.*;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -11,28 +13,22 @@ import javafx.scene.layout.*;
 public class ImitamagotchiGame extends Application {
 	@Override
 	public void start(Stage primaryStage) {
+		
+		Cat c = new Cat();
+		
+		AnimalRegion<Cat> catRegion = new AnimalRegion<Cat>(c);
+		
+		
+		
 		try {
+			
+			//FXMLLoader.load(getClass().getResource("../regions/AnimalRegion.fxml"));
 			//BorderPane root = new BorderPane();
 			//Scene scene = new Scene(root,400,400);
 			VBox  vMainBox  = new VBox(1);
-			HBox TamaBoxes[] = {  	this.addTamaBox(),
-									this.addTamaBox(),
-									this.addTamaBox(),
-									this.addTamaBox(),
-									this.addTamaBox(),
-									this.addTamaBox(),
-									this.addTamaBox(),
-									this.addTamaBox(),
-									this.addTamaBox(),
-									this.addTamaBox()
-			};
-			/*HBox TamaBox = this.addHBox();
-			HBox TamaBox = this.addHBox();
-			HBox TamaBox = this.addHBox();
-			HBox TamaBox = this.addHBox();*/
-			
-			
-			vMainBox.getChildren().addAll(TamaBoxes);
+
+			//vMainBox.getChildren().add(FXMLLoader.load(getClass().getResource("../regions/AnimalRegion.fxml")));
+			vMainBox.getChildren().add(catRegion.getNode());
 			
 			
 			
@@ -57,7 +53,7 @@ public class ImitamagotchiGame extends Application {
 	}
 	
 	
-	public HBox addTamaBox() {
+	/*public HBox addTamaBox() {
 	    HBox hbox = new HBox();
 	    hbox.setPadding(new Insets(15, 12, 15, 12));
 	    hbox.setSpacing(10);
@@ -71,7 +67,7 @@ public class ImitamagotchiGame extends Application {
 	    hbox.getChildren().add(this.makeActionButton("Remove Mask",95));
 	    hbox.getChildren().add(this.makeActionButton("Wash Self",70));
 	    hbox.getChildren().add(this.makeActionButton("Smoke",65));
-	    
+	   
 	    
 	    hbox.getChildren().add(this.makeActionButton("See Friends",80));// TODO: dropdown
 	    hbox.getChildren().add(this.makeActionButton("Reproduce",80));// TODO: dropdown
@@ -83,7 +79,7 @@ public class ImitamagotchiGame extends Application {
 		button.setPrefSize(width, 40);
 		
 		return button;
-	}
+	} */
 	
 }
 
