@@ -8,7 +8,7 @@ import java.util.List;
 public class Animal {
 	protected String name;
 	protected String color;
-	protected String species;
+	protected String type;
 	protected double age;
 	protected int lifeExpectancy;
 	protected double health;			// Current health
@@ -301,7 +301,11 @@ public class Animal {
 	public double getAge() {
 		return this.age;
 	}
-
+	
+	public String getType() {
+		return this.type;
+	}
+	
 	public void setAge(double a) {
 		if (this.lifeExpectancy < a)
 		{

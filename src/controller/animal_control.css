@@ -1,10 +1,110 @@
-.animal-region{
-	-fx-background-color: #336699;
+@font-face {
+    src: url("../../resources/fonts/Ubuntu-Bold.ttf"),
 }
 
+@font-face {
+    src: url("../../resources/fonts/Ubuntu-Regular.ttf"),
+}
+
+
+.animal-region{
+	/*-fx-background-color: #336699;*/
+	
+	
+}
+.animal-info{
+	-fx-background-position: right top;
+	-fx-background-repeat: no-repeat;
+	-fx-background-color: #ffffff;
+}
+
+
+.cat .animal-info{
+	-fx-background-image: url("../../resources/images/backgrounds/infobg_cat.png");
+}
+
+.dog .animal-info{
+	-fx-background-image: url("../../resources/images/backgrounds/infobg_dog.png");
+}
+
+.dragon .animal-info{
+	-fx-background-image: url("../../resources/images/backgrounds/infobg_dragon.png");
+}
+
+.monkey .animal-info{
+	-fx-background-image: url("../../resources/images/backgrounds/infobg_monkey.png");
+}
+
+.cat .animal-action-bar{
+	-fx-background-image: url("../../resources/images/backgrounds/actionbg_cat.png");
+}
+
+.dog .animal-action-bar{
+	-fx-background-image: url("../../resources/images/backgrounds/actionbg_dog.png");
+}
+
+.dragon .animal-action-bar{
+	-fx-background-image: url("../../resources/images/backgrounds/actionbg_dragon.png");
+}
+
+.monkey .animal-action-bar{
+	-fx-background-image: url("../../resources/images/backgrounds/actionbg_monkey.png");
+}
 
 .animal-action-bar{
-		-fx-padding: 27 0 0 0;	
+		-fx-padding: 27 30 0 0;	
 		-fx-spacing: 20;
-		/*-fx-background-color: #f8ddee;*/
+	-fx-background-repeat: repeat;
+	
+
 }
+
+.animal-info{
+	    -fx-pref-width: 185px;
+	    -fx-padding: 0 40 0 0;	
+}
+
+
+#animalNameInfo{
+    -fx-font-family: Ubuntu;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0 0 10;
+    
+    /*-fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, aqua 0%, red 50%);*/
+}
+
+#animalTypeInfo{
+    -fx-font-family: Ubuntu;
+    -fx-font-size: 16px;
+    -fx-padding: 0 0 0 10;
+}
+
+.animal-info #animalTypeInfo{
+	-fx-text-fill : #000000;
+}
+
+
+.cat #animalNameInfo{
+	-fx-text-fill : #ff9900;
+}
+.dragon #animalNameInfo{
+	-fx-text-fill : #00d437;
+}
+
+.dog #animalNameInfo{
+	-fx-text-fill : #ff002b;
+}
+.monkey #animalNameInfo{
+	-fx-text-fill : #0098ff;
+}
+
+.animal-region{
+	-fx-background-color: #ffffff;
+}
+
+
+
+
+
+

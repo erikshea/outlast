@@ -1,6 +1,7 @@
 
 dye:
--adjust hue, make sure no orange
+-hue color slider, make sure no orange
+
 
 mask:
 -limited ammt
