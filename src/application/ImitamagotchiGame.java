@@ -1,6 +1,6 @@
 package application;
 import animals.*;
-import regions.*;
+import controller.AnimalControl;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -16,10 +16,9 @@ public class ImitamagotchiGame extends Application {
 		
 		Cat c = new Cat();
 		
-		AnimalRegion<Cat> catRegion = new AnimalRegion<Cat>(c);
-		
-		
-		
+		//AnimalController catRegion = new AnimalController();
+		AnimalControl<Cat> animalControl = new AnimalControl<Cat>(c);
+
 		try {
 			
 			//FXMLLoader.load(getClass().getResource("../regions/AnimalRegion.fxml"));
@@ -28,7 +27,7 @@ public class ImitamagotchiGame extends Application {
 			VBox  vMainBox  = new VBox(1);
 
 			//vMainBox.getChildren().add(FXMLLoader.load(getClass().getResource("../regions/AnimalRegion.fxml")));
-			vMainBox.getChildren().add(catRegion.getNode());
+			vMainBox.getChildren().add(animalControl);
 			
 			
 			

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+
+
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Text?>
+<?import fxml.*?>
+
+
+<fx:root type="javafx.scene.layout.HBox" xmlns:fx="http://javafx.com/fxml" styleClass = "animal-region" stylesheets="@animal_control.css">
+	<children>
+	
+		<ImageView fitHeight="100" pickOnBounds="true" preserveRatio="true"  >
+           <image>
+              <Image url="@../../resources/images/species/cat.png" />
+           </image>
+		</ImageView>
+
+
+		<HBox styleClass = "animal-action-bar">
+		<children>
+		<ImageView styleClass="animal-action" fitHeight="50" pickOnBounds="true" preserveRatio="true" >
+           <image>
+              <Image url="@../../resources/images/actions/color.png" />
+           </image>
+           <ActionTooltip.tooltip>
+               <Tooltip text="Dye hair"/>
+           </ActionTooltip.tooltip>
+		</ImageView>
+		<ImageView styleClass="animal-action" fitHeight="50" pickOnBounds="true" preserveRatio="true" >
+           <image>
+              <Image url="@../../resources/images/actions/sleep.png" />
+           </image>
+           <ActionTooltip.tooltip>
+               <Tooltip text="Sleep"/>
+           </ActionTooltip.tooltip>
+		</ImageView>
+		<ImageView styleClass="animal-action" fitHeight="50" pickOnBounds="true" preserveRatio="true" >
+           <image>
+              <Image url="@../../resources/images/actions/smoke.png" />
+           </image>
+           <ActionTooltip.tooltip>
+               <Tooltip text="Smoke"/>
+           </ActionTooltip.tooltip>
+		</ImageView>
+		<ImageView styleClass="animal-action" fitHeight="50" pickOnBounds="true" preserveRatio="true" >
+           <image>
+              <Image url="@../../resources/images/actions/mask.png" />
+           </image>
+           <ActionTooltip.tooltip>
+               <Tooltip text="Toggle mask"/>
+           </ActionTooltip.tooltip>
+		</ImageView>
+		<ImageView styleClass="animal-action" fitHeight="50" pickOnBounds="true" preserveRatio="true" >
+           <image>
+              <Image url="@../../resources/images/actions/bathroom.png" />
+           </image>
+           <ActionTooltip.tooltip>
+               <Tooltip text="Go to the bathroom"/>
+           </ActionTooltip.tooltip>
+		</ImageView>
+		<ImageView styleClass="animal-action" fitHeight="50" pickOnBounds="true" preserveRatio="true" >
+           <image>
+              <Image url="@../../resources/images/actions/exercise.png" />
+           </image>
+           <ActionTooltip.tooltip>
+               <Tooltip text="Perform exercise"/>
+           </ActionTooltip.tooltip>
+		</ImageView>
+		<ImageView styleClass="animal-action" fitHeight="50" pickOnBounds="true" preserveRatio="true" >
+           <image>
+              <Image url="@../../resources/images/actions/see_friend.png" />
+           </image>
+           <ActionTooltip.tooltip>
+               <Tooltip text="See a friend"/>
+           </ActionTooltip.tooltip>
+		</ImageView>
+		<ImageView styleClass="animal-action" fitHeight="50" pickOnBounds="true" preserveRatio="true" >
+           <image>
+              <Image url="@../../resources/images/actions/reproduce.png" />
+           </image>
+           <ActionTooltip.tooltip>
+               <Tooltip text="Reproduce"/>
+           </ActionTooltip.tooltip>
+		</ImageView>
+		</children>
+</HBox>
+	</children>
+
+</fx:root>
