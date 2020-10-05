@@ -37,7 +37,7 @@ public class AnimalControl<T extends Animal> extends HBox {
     @FXML
     private void initialize() {
     	animalNameInfo.setText(animal.getName());
-    	animalTypeInfo.setText("The " + TextUtils.capitalize(animal.getType()));
+    	animalTypeInfo.setText("the " + TextUtils.capitalize(animal.getType()));
     	this.getStyleClass().add(animal.getType());
     	
 
