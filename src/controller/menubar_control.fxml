@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+
+
+<fx:root type="javafx.scene.control.MenuBar"
+	xmlns:fx="http://javafx.com/fxml"
+	stylesheets="@menubar_control.css">
+	<menus>
+		<Menu text="File">
+			<MenuItem fx:id="refreshAnimals" text="Refresh Animals" />
+			<MenuItem fx:id="exit" text="Quit" />
+		</Menu>
+	</menus>
+</fx:root>

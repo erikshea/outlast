@@ -28,14 +28,11 @@ public class AnimalControl<T extends Animal> extends HBox {
 	private ImageView originalPortrait;
 	
 	
-    @FXML
-    private Label animalNameInfo,animalTypeInfo;
+    @FXML private Label animalNameInfo,animalTypeInfo;
     
-    @FXML
-    private ImageView animalPortrait;
+    @FXML private ImageView animalPortrait;
     
-    @FXML
-    private void initialize() {
+    @FXML private void initialize() {
     	animalNameInfo.setText(animal.getName());
     	animalTypeInfo.setText("the " + TextUtils.capitalize(animal.getType()));
     	this.getStyleClass().add(animal.getType());

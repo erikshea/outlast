@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.layout.BorderPane?>
+<?import controller.AnimalControl?>
+<?import controller.AnimalsControl?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import controller.MenuBarControl?>
+
+<fx:root type="javafx.scene.layout.BorderPane"
+	xmlns:fx="http://javafx.com/fxml" styleClass="animal-region"
+	stylesheets="@main_window_control.css">
+	<top>
+		<MenuBarControl fx:id="mainMenuBar"/>
+	</top>
+	<center>
+		<AnimalsControl fx:id="animalsPane"/>
+	</center>
+</fx:root>
