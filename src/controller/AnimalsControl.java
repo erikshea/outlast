@@ -12,14 +12,26 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+/**
+ * 
+ * Sets up, populates and and controls interactions between a group of animal regions.
+ *
+ */
 public class AnimalsControl extends VBox{
     @FXML private MainWindowControl mainPane;
     
+    /**
+     * Spawn initial animals
+     */
     public void initialize()
     {
-    	
+    	this.spawnRandomAnimals(8);
     }
     
+    /**
+     * Loads .fxml as root
+     * @param a animal subclass
+     */
     public AnimalsControl()
     {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("animals_control.fxml"));
@@ -33,6 +45,10 @@ public class AnimalsControl extends VBox{
         }
     }
     
+    /**
+     * Spawn random animals in current animals region
+     * @param ammount number to spawn
+     */
 	public void spawnRandomAnimals(int ammount)
 	{
 		int rand;
@@ -43,28 +59,36 @@ public class AnimalsControl extends VBox{
 			switch (rand)
 			{
 			case 1:
-				this.addAnimalControl(this, new Cat());
+				this.addAnimalControl(new Cat());
 				break;
 			case 2:
-				this.addAnimalControl(this, new Dog());
+				this.addAnimalControl(new Dog());
 				break;
 			case 3:
-				this.addAnimalControl(this, new Monkey());
+				this.addAnimalControl(new Monkey());
 				break;
 			case 4:
-				this.addAnimalControl(this, new Dragon());
+				this.addAnimalControl(new Dragon());
 				break;
 			}
 		}
 	}
 
-	private <T extends Animal> void addAnimalControl(Pane p, T a) {
+	/**
+	 * Adds an animal region to the current animals region
+	 * @param <T> Animal subtype
+	 * @param a Animal subtype
+	 */
+	private <T extends Animal> void addAnimalControl(T a) {
 		this.getChildren().add(new AnimalControl<Animal>(a));
 	}
-	
-	public void setMainPane(MainWindowControl p)
+
+	/**
+	 * Sets mainPane to a reference to the main window pane (to communicate with other controllers)
+	 * @param p main window pane
+	 */
+	void setMainPane(MainWindowControl p)
 	{
 		this.mainPane = p;
 	}
-	
 }
