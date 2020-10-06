@@ -10,6 +10,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.HBox;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.image.Image;
@@ -30,6 +31,8 @@ public class AnimalControl<T extends Animal> extends HBox {
 	private T animal;	// Animal subclass: Cat, Dog, etc...
 	
     @FXML private Label animalNameInfo,animalTypeInfo;	// Animal info labels in .fxml
+    @FXML private ProgressBar healthBar, moodBar;
+    
     
     @FXML private ImageView animalPortrait;	// Animal portrait in .fxml
     
@@ -37,6 +40,13 @@ public class AnimalControl<T extends Animal> extends HBox {
      * Set up view elements
      */
     @FXML private void initialize() {
+    	
+    	this.healthBar.setMaxWidth(this.animal.getMaxHealth() * 10);
+    	this.healthBar.setProgress(1);
+    	
+    	
+    	
+    	
         this.animal.setName(this.getRandomName());	// Set random name
     	
         // Set name and label in view
@@ -54,6 +64,8 @@ public class AnimalControl<T extends Animal> extends HBox {
     	this.changePortraitColor(2*Math.random()-1);
 
     	this.setUpActionButtons();
+    	
+    	
     }
 
     /**

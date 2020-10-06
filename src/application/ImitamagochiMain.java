@@ -11,9 +11,7 @@ public class ImitamagochiMain extends Application {
 		try {
 			// Main window is handled by its own controller
 			MainWindowControl mainWindow = new MainWindowControl();
-			
 			Scene scene = new Scene(mainWindow, 880, 826);
-
 			primaryStage.setTitle("Imitamagotchi");
 
 			primaryStage.setScene(scene);

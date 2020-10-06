@@ -90,6 +90,13 @@
 
 }
 
+ProgressBar {
+    -fx-padding: 5 0 0 0;
+
+}
+#healthBar{
+	    -fx-accent: red;
+}
 
 
 
