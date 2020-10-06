@@ -32,13 +32,9 @@ public class Animal {
 	 */
 	public void reset() {
 		this.age = 0;
-		this.baseMaxSize = 30;
-		this.health = this.baseMaxHealth = 50;
 		this.moodPercentage = this.foodPercentage = 100;
-		this.lifeExpectancy = 20;
 		this.excrementPercentage = 0;
 		this.hasMask = false;
-		this.color = "tabby";
 	}
 
 	/**

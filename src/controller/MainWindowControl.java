@@ -1,20 +1,15 @@
 package controller;
 import java.io.IOException;
 
-import animals.Animal;
-import animals.Cat;
-import animals.Dog;
-import animals.Dragon;
-import animals.Monkey;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 
 
 /**
- * Sets up main window and: spawns menu, animal regions..
- * acts as a bridge betwen different controllers
+ * Sets up main window and spawns menu, animal regions..
+ * acts as a bridge between different controllers
  */
 public class MainWindowControl extends BorderPane{
 	@FXML private AnimalsControl animalsPane;
@@ -23,7 +18,6 @@ public class MainWindowControl extends BorderPane{
 	public void initialize() {
 
 		this.mainMenuBar.setMainPane(this);
-		//this.spawnRandomAnimals(8);			// 
 	}
 	
 	public MainWindowControl()

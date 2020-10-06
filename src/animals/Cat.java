@@ -1,8 +1,13 @@
 package animals;
 
 public class Cat extends Animal {
-	public Cat() {
+
+	public void reset(){
+		super.reset();
 		this.type = "cat";
+		this.lifeExpectancy = 20;
+		this.baseMaxSize = 30;
+		this.health = this.baseMaxHealth = 50;
 	}
 	
 }

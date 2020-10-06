@@ -31,7 +31,7 @@ public class AnimalControl<T extends Animal> extends HBox {
 	private T animal;	// Animal subclass: Cat, Dog, etc...
 	
     @FXML private Label animalNameInfo,animalTypeInfo;	// Animal info labels in .fxml
-    @FXML private ProgressBar healthBar, moodBar;
+    @FXML private ProgressBar healthBar, moodBar;	// stat bars in .fxml
     
     
     @FXML private ImageView animalPortrait;	// Animal portrait in .fxml
@@ -41,8 +41,10 @@ public class AnimalControl<T extends Animal> extends HBox {
      */
     @FXML private void initialize() {
     	
-    	this.healthBar.setMaxWidth(this.animal.getMaxHealth() * 10);
+    	this.healthBar.setMaxWidth(this.animal.getMaxHealth() * 5);
     	this.healthBar.setProgress(1);
+    	this.moodBar.setMaxWidth(100);
+    	this.moodBar.setProgress(1);
     	
     	
     	
@@ -53,7 +55,7 @@ public class AnimalControl<T extends Animal> extends HBox {
     	animalNameInfo.setText(animal.getName());
     	animalTypeInfo.setText("the " + TextUtils.capitalize(animal.getType()));
     	
-    	this.getStyleClass().add(animal.getType());	// Make root item have animal name as root c
+    	this.getStyleClass().add(animal.getType());	// make animal type the style class for the root node (for css)
     	
 
         Image portrait = new Image("file:@../../resources/images/species/" + animal.getType() + ".png");
@@ -87,7 +89,7 @@ public class AnimalControl<T extends Animal> extends HBox {
        
     }
     
-    /*
+    /**
      * Reads a file consisting of a list of names, returns a random one
      */
     private String getRandomName()
@@ -120,7 +122,6 @@ public class AnimalControl<T extends Animal> extends HBox {
     {
     	ColorAdjust colorAdjust = new ColorAdjust();
     	
-        colorAdjust.setSaturation(1);
         colorAdjust.setHue(value); 
         
         this.animalPortrait.setEffect(colorAdjust);
@@ -183,7 +184,7 @@ public class AnimalControl<T extends Animal> extends HBox {
     		    @Override
     		    public void handle(MouseEvent t) {
     		    	
-    		    	String action = v.getStyleClass().get(1).toString();	// action name (class) defined in .fxml 
+    		    	String action = v.getStyleClass().get(1);	// action name (class) defined in .fxml 
     		    	me.executeAction(action);
     		    }
     		});

@@ -27,10 +27,9 @@ public class MenuBarControl extends MenuBar {
             public void handle(ActionEvent e) 
             { 
             	// fetch all animal panes from main window reference
-            	Set<Node> animals = me.mainPane.getAnimalsPane().lookupAll("AnimalControl");
 
             	// delete them all
-            	me.mainPane.getAnimalsPane().getChildren().removeAll(animals);
+            	me.mainPane.getAnimalsPane().getChildren().clear();
             	// add new ones
             	me.mainPane.getAnimalsPane().spawnRandomAnimals(8);
             } 
