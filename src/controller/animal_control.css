@@ -23,8 +23,6 @@
     -fx-font-size: 22px;
     -fx-font-weight: bold;
     -fx-padding: 10 0 0 10;
-    
-    /*-fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, aqua 0%, red 50%);*/
 }
 
 #animalTypeInfo{
@@ -85,8 +83,8 @@
 }
 
 .animal-action-bar{
-		-fx-padding: 27 30 0 0;	
-		-fx-spacing: 20;
+	-fx-padding: 27 30 0 0;	
+	-fx-spacing: 20;
 	-fx-background-repeat: repeat;
 	
 
