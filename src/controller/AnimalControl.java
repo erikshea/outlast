@@ -40,7 +40,7 @@ public class AnimalControl<T extends Animal> extends HBox {
     @FXML private ImageView animalPortrait;	// Animal portrait in .fxml
     
     SimpleStringProperty ageNumberUpdater;
-    SimpleDoubleProperty ageIndicatorUpdater;
+    SimpleDoubleProperty ageIndicatorUpdater,healthIndicatorUpdater;
     
     /**
      * Set up view elements
@@ -50,8 +50,6 @@ public class AnimalControl<T extends Animal> extends HBox {
 
     	
 
-    	this.healthBar.setMaxWidth(this.animal.getMaxHealth() * 5);
-    	this.healthBar.setProgress(1);		// Starts full
     	
     	this.moodBar.setMaxWidth(20000);	// Will adapt to container width
     	this.moodBar.setProgress(1);		// Starts full
@@ -68,12 +66,19 @@ public class AnimalControl<T extends Animal> extends HBox {
 
     	this.ageIndicatorUpdater = new SimpleDoubleProperty();
     	this.ageIndicator.progressProperty().bind(ageIndicatorUpdater);
-
+/*
+    	this.healthIndicatorUpdater = new SimpleDoubleProperty(); 
+    	this.healthBar.progressProperty().bind(healthIndicatorUpdater);
+    	this.healthBar.setProgress(1);		// Starts full
+*/
+    	this.healthBar.setProgress(1);		// Starts full
+    	this.healthBar.setMaxWidth(this.animal.getMaxHealth() * 5);
     	this.refreshStats(0);
     	
     	this.ageIndicator.setPrefWidth(60);
     	this.ageIndicator.setPrefHeight(60);
         
+    	
        // animalAge.setText(String.valueOf((int)this.animal.getAge()));
         
         // Set name and label in view
@@ -231,6 +236,8 @@ public class AnimalControl<T extends Animal> extends HBox {
 		
 		
 		this.ageIndicatorUpdater.setValue((this.animal.getAge()-1)/this.animal.getLifeExpectancy());
+		
+    	//this.healthIndicatorUpdater.setValue(this.animal.getHealth()*5);
 	}
     
 }
