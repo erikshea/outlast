@@ -8,3 +8,5 @@ mask:
 
 reproduce:
 -mix hues, address ginger baby
+
+lifespan indicator: reverse

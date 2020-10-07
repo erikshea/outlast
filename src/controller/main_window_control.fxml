@@ -10,6 +10,6 @@
 		<MenuBarControl fx:id="mainMenuBar"/>
 	</top>
 	<center>
-		<AnimalsControl fx:id="animalsPane"/>
+		<AnimalsControl fx:id="animalsRegion"/>
 	</center>
 </fx:root>

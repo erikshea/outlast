@@ -63,7 +63,7 @@ public class Animal {
 	 */
 	public boolean isAlive()
 	{
-		return this.getHealth() == 0;
+		return !(this.getHealth() == 0);
 	}
 	
 	/**
@@ -245,9 +245,9 @@ public class Animal {
 	 * @param duration
 	 */
 	public void increaseAgeBy( double duration ) {
-		double healthIncreaseRatio = (this.getAge() + duration)/this.getAge();	
+		//double healthIncreaseRatio = (this.getAge() + duration)/this.getAge();	
 
-		this.setHealth(healthIncreaseRatio * this.getHealth());
+		//this.setHealth(healthIncreaseRatio * this.getHealth());
 		
 		this.setAge(this.age + duration);
 	}

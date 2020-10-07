@@ -3,6 +3,8 @@ package controller;
 import java.io.IOException;
 import animals.*;
 import util.TextUtils;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,11 +39,17 @@ public class AnimalControl<T extends Animal> extends HBox {
     
     @FXML private ImageView animalPortrait;	// Animal portrait in .fxml
     
+    SimpleStringProperty ageNumberUpdater;
+    SimpleDoubleProperty ageIndicatorUpdater;
+    
     /**
      * Set up view elements
      */
     @FXML private void initialize() {
     	
+
+    	
+
     	this.healthBar.setMaxWidth(this.animal.getMaxHealth() * 5);
     	this.healthBar.setProgress(1);		// Starts full
     	
@@ -52,14 +60,21 @@ public class AnimalControl<T extends Animal> extends HBox {
     	this.moodBar.setMaxHeight(20);
 
         this.animal.setName(this.getRandomName());	// Set random name
+
     	this.animal.setAge(Math.random()*this.animal.getLifeExpectancy());	// Set random age TODO: change
+
+    	this.ageNumberUpdater = new SimpleStringProperty();
+    	this.animalAge.textProperty().bind(this.ageNumberUpdater);
+
+    	this.ageIndicatorUpdater = new SimpleDoubleProperty();
+    	this.ageIndicator.progressProperty().bind(ageIndicatorUpdater);
+
+    	this.refreshStats(0);
     	
     	this.ageIndicator.setPrefWidth(60);
     	this.ageIndicator.setPrefHeight(60);
-
-    	this.ageIndicator.setProgress((this.animal.getAge()-1)/this.animal.getLifeExpectancy());
         
-        animalAge.setText(String.valueOf((int)this.animal.getAge()));
+       // animalAge.setText(String.valueOf((int)this.animal.getAge()));
         
         // Set name and label in view
     	animalNameInfo.setText(animal.getName());
@@ -202,6 +217,20 @@ public class AnimalControl<T extends Animal> extends HBox {
     }
     
     
-    
+    public T getAnimal()
+    {
+    	return this.animal;
+    }
+	
+	void refreshStats(double duration)
+	{
+		this.animal.increaseAgeBy(duration);
+		
+		String ageString = (String.valueOf((int) (Math.floor(this.animal.getAge()))));
+		this.ageNumberUpdater.setValue(ageString);
+		
+		
+		this.ageIndicatorUpdater.setValue((this.animal.getAge()-1)/this.animal.getLifeExpectancy());
+	}
     
 }

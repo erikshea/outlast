@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
@@ -13,8 +14,8 @@ import javafx.scene.control.MenuItem;
  */
 public class MenuBarControl extends MenuBar {
 	
-    @FXML private MenuItem refreshAnimals,exit;
-    @FXML private MainWindowControl mainPane;
+    @FXML private MenuItem refreshAnimals,exit,test;
+    @FXML private MainWindowControl mainRegion;
 	
 	public void initialize()
 	{
@@ -24,12 +25,10 @@ public class MenuBarControl extends MenuBar {
 		this.refreshAnimals.setOnAction(new EventHandler<ActionEvent>() { 
             public void handle(ActionEvent e) 
             { 
-            	// fetch all animal panes from main window reference
-
             	// delete them all
-            	me.mainPane.getAnimalsPane().getChildren().clear();
+            	me.mainRegion.getAnimalsRegion().getChildren().clear();
             	// add new ones
-            	me.mainPane.getAnimalsPane().spawnRandomAnimals(8);
+            	me.mainRegion.getAnimalsRegion().spawnRandomAnimals(8);
             } 
         }); 
         
@@ -38,6 +37,13 @@ public class MenuBarControl extends MenuBar {
         this.exit.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
                 System.exit(0);
+            }
+        });
+        
+        this.test.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	Node test = me.mainRegion.getAnimalsRegion().getChildren().get(0);
+            	me.mainRegion.getAnimalsRegion().getChildren().remove(test);
             }
         });
 	}
@@ -63,8 +69,8 @@ public class MenuBarControl extends MenuBar {
 	 * Sets mainPane to a reference to the main window pane (to communicate with other controllers)
 	 * @param p main window pane
 	 */
-	public void setMainPane(MainWindowControl p)
+	public void setMainRegion(MainWindowControl p)
 	{
-		this.mainPane = p;
+		this.mainRegion = p;
 	}
 }

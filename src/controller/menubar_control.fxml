@@ -12,6 +12,7 @@
 		<Menu text="File">
 			<MenuItem fx:id="refreshAnimals" text="Refresh Animals" />
 			<MenuItem fx:id="exit" text="Quit" />
+			<MenuItem fx:id="test" text="Test" />
 		</Menu>
 	</menus>
 </fx:root>
