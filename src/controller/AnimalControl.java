@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.image.Image;
@@ -30,9 +31,9 @@ import java.util.Set;
 public class AnimalControl<T extends Animal> extends HBox {
 	private T animal;	// Animal subclass: Cat, Dog, etc...
 	
-    @FXML private Label animalNameInfo,animalTypeInfo;	// Animal info labels in .fxml
+    @FXML private Label animalNameInfo,animalTypeInfo,animalAge;	// Animal info labels in .fxml
     @FXML private ProgressBar healthBar, moodBar;	// stat bars in .fxml
-    
+    @FXML private ProgressIndicator ageIndicator;
     
     @FXML private ImageView animalPortrait;	// Animal portrait in .fxml
     
@@ -42,22 +43,30 @@ public class AnimalControl<T extends Animal> extends HBox {
     @FXML private void initialize() {
     	
     	this.healthBar.setMaxWidth(this.animal.getMaxHealth() * 5);
-    	this.healthBar.setProgress(1);
-    	this.moodBar.setMaxWidth(100);
-    	this.moodBar.setProgress(1);
+    	this.healthBar.setProgress(1);		// Starts full
     	
+    	this.moodBar.setMaxWidth(20000);	// Will adapt to container width
+    	this.moodBar.setProgress(1);		// Starts full
     	
-    	
-    	
+    	this.healthBar.setMaxHeight(20);
+    	this.moodBar.setMaxHeight(20);
+
         this.animal.setName(this.getRandomName());	// Set random name
+    	this.animal.setAge(Math.random()*this.animal.getLifeExpectancy());	// Set random age TODO: change
     	
+    	this.ageIndicator.setPrefWidth(60);
+    	this.ageIndicator.setPrefHeight(60);
+
+    	this.ageIndicator.setProgress((this.animal.getAge()-1)/this.animal.getLifeExpectancy());
+        
+        animalAge.setText(String.valueOf((int)this.animal.getAge()));
+        
         // Set name and label in view
     	animalNameInfo.setText(animal.getName());
     	animalTypeInfo.setText("the " + TextUtils.capitalize(animal.getType()));
     	
     	this.getStyleClass().add(animal.getType());	// make animal type the style class for the root node (for css)
     	
-
         Image portrait = new Image("file:@../../resources/images/species/" + animal.getType() + ".png");
         
     	animalPortrait.setImage(portrait);
@@ -162,7 +171,7 @@ public class AnimalControl<T extends Animal> extends HBox {
     		ImageView v = (ImageView) actionImageView;	// Cast node to ImageView 
     		
     		// Set icon
-    		Image actionIcon = new Image("file:@../../resources/images/actions/normal/" + animal.getType() + "/" + v.getStyleClass().get(1) + ".png");
+    		Image actionIcon = new Image("file:@../../resources/images/actions/" + animal.getType() + "/" + v.getStyleClass().get(1) + ".png");
     		v.setPickOnBounds(true);	// entire image bounding box should be clickable, not just visible parts
     		v.setImage(actionIcon);
     		

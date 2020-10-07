@@ -1,13 +1,7 @@
 package animals;
-import java.lang.reflect.Method;
-import java.util.List;
 
 public class TryStuff {
 	public static void main(String[] args) {
-		
-
-    	//Set<Node> animals = me.mainPane.getAnimalsPane().lookupAll("AnimalControl");
-		
 		System.out.println(makeProgressBar(7));
 	}
 	

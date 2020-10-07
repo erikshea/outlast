@@ -313,8 +313,17 @@ public class Animal {
 		return this.type;
 	}
 	
+	public double getMoodPercentage() {
+		return this.moodPercentage;
+	}
 
+	public void setMoodPercentage(double m) {
+		this.moodPercentage = m;
+	}
 
+	public double getLifeExpectancy() {
+		return this.lifeExpectancy;
+	}
 	public int getExcrementPercentage() {
 		return this.excrementPercentage;
 	}

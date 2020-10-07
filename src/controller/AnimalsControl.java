@@ -53,10 +53,9 @@ public class AnimalsControl extends VBox{
 		int rand;
 		for(int i = 0;i<ammount;i++)
 		{
-			 rand = (int)(1 + 4*Math.random());
+			rand = (int)(1 + 4*Math.random());
 			
-			switch (rand)
-			{
+			switch (rand){
 			case 1:
 				this.addAnimalControl(new Cat());
 				break;

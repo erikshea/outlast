@@ -6,6 +6,6 @@ public class Dragon extends Animal {
 		this.type = "dragon";
 		this.lifeExpectancy = 2000;
 		this.baseMaxSize = 260;
-		this.health = this.baseMaxHealth = 120;
+		this.health = this.baseMaxHealth = 90;
 	}
 }

@@ -20,8 +20,7 @@ public class MainWindowControl extends BorderPane{
 		this.mainMenuBar.setMainPane(this);
 	}
 	
-	public MainWindowControl()
-	{
+	public MainWindowControl(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("main_window_control.fxml"));
         loader.setRoot(this);
         loader.setController(this);

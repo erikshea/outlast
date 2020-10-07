@@ -14,7 +14,7 @@
 	-fx-background-position: right top;
 	-fx-background-repeat: no-repeat;
 	-fx-background-color: #ffffff;
-    -fx-pref-width: 185px;
+    -fx-pref-width: 180px;
     -fx-padding: 0 40 0 0;	
 }
 
@@ -51,54 +51,90 @@
 }
 
 .cat .animal-info{
-	-fx-background-image: url("../../resources/images/backgrounds/infobg_cat.png");
+	-fx-background-image: url("../../resources/images/backgrounds/transition/cat.png");
 }
 
 .dog .animal-info{
-	-fx-background-image: url("../../resources/images/backgrounds/infobg_dog.png");
+	-fx-background-image: url("../../resources/images/backgrounds/transition/dog.png");
 }
 
 .dragon .animal-info{
-	-fx-background-image: url("../../resources/images/backgrounds/infobg_dragon.png");
+	-fx-background-image: url("../../resources/images/backgrounds/transition/dragon.png");
 }
 
 .monkey .animal-info{
-	-fx-background-image: url("../../resources/images/backgrounds/infobg_monkey.png");
+	-fx-background-image: url("../../resources/images/backgrounds/transition/monkey.png");
 }
 
-.cat .animal-action-bar{
-	-fx-background-image: url("../../resources/images/backgrounds/actionbg_cat.png");
+.cat .right-region{
+	-fx-background-image: url("../../resources/images/backgrounds/repeat/cat.png");
 }
 
-.dog .animal-action-bar{
-	-fx-background-image: url("../../resources/images/backgrounds/actionbg_dog.png");
+.dog .right-region{
+	-fx-background-image: url("../../resources/images/backgrounds/repeat/dog.png");
 }
 
-.dragon .animal-action-bar{
-	-fx-background-image: url("../../resources/images/backgrounds/actionbg_dragon.png");
+.dragon .right-region{
+	-fx-background-image: url("../../resources/images/backgrounds/repeat/dragon.png");
 }
 
-.monkey .animal-action-bar{
-	-fx-background-image: url("../../resources/images/backgrounds/actionbg_monkey.png");
+.monkey .right-region{
+	-fx-background-image: url("../../resources/images/backgrounds/repeat/monkey.png");
+}
+
+.right-region{
+	-fx-background-repeat: repeat;
+	-fx-padding: 0 20 0 5;
+}
+
+.monkey .right-region{
+	-fx-background-image: url("../../resources/images/backgrounds/repeat/monkey.png");
 }
 
 .animal-action-bar{
-	-fx-padding: 27 30 0 0;	
-	-fx-spacing: 20;
-	-fx-background-repeat: repeat;
-	
-
+	-fx-padding: 10 20 0 0;	
+	-fx-spacing: 10;
 }
 
 ProgressBar {
     -fx-padding: 5 0 0 0;
 	-fx-height: 10px;
+
 }
 #healthBar{
-	    -fx-accent: red;
+	
+	-fx-accent: red;
 }
 
+#animalAge{
+	
+}
+.animal-age-region  {
+    -fx-padding: 10 0 0 0;
+}
 
+.animal-age-region Label{
+	-fx-text-fill : #9f9f9f;
+    -fx-font-family: Ubuntu;
+    -fx-font-size: 12px;
+    -fx-padding: 4 0 0 3;
+}
+
+#animalAge{
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-padding: -5 0 0 0;
+}
+
+#ageIndicator .percentage {
+    -fx-fill:null;
+}
+
+#ageIndicator  {
+	-fx-max-width:30;
+    -fx-padding: 0 -3 0 0;
+	-fx-accent: #9f9f9f;
+}
 
 
 

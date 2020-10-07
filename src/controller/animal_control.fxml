@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Label?>
 <?import fxml.ActionTooltip?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ProgressIndicator?>
 
 <fx:root type="javafx.scene.layout.HBox"
 	xmlns:fx="http://javafx.com/fxml" styleClass="animal-region"
@@ -21,55 +22,66 @@
 			<children>
 				<Label fx:id="animalNameInfo" />
 				<Label fx:id="animalTypeInfo" />
+				<HBox styleClass="animal-age-region" alignment="TOP_RIGHT">
+					<children>
+						<ProgressIndicator fx:id="ageIndicator"/>
+						<Label fx:id="animalAge" />
+						<Label text="years" />
+					</children>
+				</HBox>
 			</children>
-			<ProgressBar fx:id="healthBar"/>
-			<ProgressBar fx:id="moodBar"/>
+		</VBox>
+		<VBox styleClass="right-region">
+			<children>
+				<HBox styleClass="animal-action-bar">
+					<children>
+						<ImageView styleClass="color">
+							<ActionTooltip.tooltip> 			<!--use ActionTooltip to set text within .fxml -->
+								<Tooltip text="Dye hair" />
+							</ActionTooltip.tooltip>
+						</ImageView>
+						<ImageView styleClass="sleep">
+							<ActionTooltip.tooltip>
+								<Tooltip text="Sleep" />
+							</ActionTooltip.tooltip>
+						</ImageView>
+						<ImageView styleClass="smoke">
+							<ActionTooltip.tooltip>
+								<Tooltip text="Smoke" />
+							</ActionTooltip.tooltip>
+						</ImageView>
+						<ImageView styleClass="mask">
+							<ActionTooltip.tooltip>
+								<Tooltip text="Toggle mask" />
+							</ActionTooltip.tooltip>
+						</ImageView>
+						<ImageView styleClass="bathroom">
+							<ActionTooltip.tooltip>
+								<Tooltip text="Go to the bathroom" />
+							</ActionTooltip.tooltip>
+						</ImageView>
+						<ImageView styleClass="exercise">
+							<ActionTooltip.tooltip>
+								<Tooltip text="Perform exercise" />
+							</ActionTooltip.tooltip>
+						</ImageView>
+						<ImageView styleClass="see_friend">
+							<ActionTooltip.tooltip>
+								<Tooltip text="See a friend" />
+							</ActionTooltip.tooltip>
+						</ImageView>
+						<ImageView styleClass="reproduce">
+							<ActionTooltip.tooltip>
+								<Tooltip text="Reproduce" />
+							</ActionTooltip.tooltip>
+						</ImageView>
+					</children>
+				</HBox>
+				<ProgressBar fx:id="healthBar" />
+				<ProgressBar fx:id="moodBar" />
+			</children>
 		</VBox>
 
-		<HBox styleClass="animal-action-bar">
-			<children>
-				<ImageView styleClass="color">
-					<ActionTooltip.tooltip> 			<!--use ActionTooltip to set text within .fxml  -->
-						<Tooltip text="Dye hair" />
-					</ActionTooltip.tooltip>
-				</ImageView>
-				<ImageView styleClass="sleep">
-					<ActionTooltip.tooltip>
-						<Tooltip text="Sleep" />
-					</ActionTooltip.tooltip>
-				</ImageView>
-				<ImageView styleClass="smoke">
-					<ActionTooltip.tooltip>
-						<Tooltip text="Smoke" />
-					</ActionTooltip.tooltip>
-				</ImageView>
-				<ImageView styleClass="mask">
-					<ActionTooltip.tooltip>
-						<Tooltip text="Toggle mask" />
-					</ActionTooltip.tooltip>
-				</ImageView>
-				<ImageView styleClass="bathroom">
-					<ActionTooltip.tooltip>
-						<Tooltip text="Go to the bathroom" />
-					</ActionTooltip.tooltip>
-				</ImageView>
-				<ImageView styleClass="exercise">
-					<ActionTooltip.tooltip>
-						<Tooltip text="Perform exercise" />
-					</ActionTooltip.tooltip>
-				</ImageView>
-				<ImageView styleClass="see_friend">
-					<ActionTooltip.tooltip>
-						<Tooltip text="See a friend" />
-					</ActionTooltip.tooltip>
-				</ImageView>
-				<ImageView styleClass="reproduce">
-					<ActionTooltip.tooltip>
-						<Tooltip text="Reproduce" />
-					</ActionTooltip.tooltip>
-				</ImageView>
-			</children>
-		</HBox>
 	</children>
 
 </fx:root>
