@@ -22,13 +22,21 @@
 			<children>
 				<Label fx:id="animalNameInfo" />
 				<Label fx:id="animalTypeInfo" />
+				
+						
+	
+						
 				<HBox styleClass="animal-age-region" alignment="TOP_RIGHT">
 					<children>
+						<Label fx:id="animalSize" />
 						<ProgressIndicator fx:id="ageIndicator"/>
 						<Label fx:id="animalAge" />
 						<Label text="years" />
 					</children>
 				</HBox>
+				
+				
+				
 			</children>
 		</VBox>
 		<VBox styleClass="right-region">
@@ -38,6 +46,11 @@
 						<ImageView styleClass="color">
 							<ActionTooltip.tooltip> 			<!--use ActionTooltip to set text within .fxml -->
 								<Tooltip text="Dye hair" />
+							</ActionTooltip.tooltip>
+						</ImageView>
+						<ImageView styleClass="eat">
+							<ActionTooltip.tooltip>
+								<Tooltip text="Eat" />
 							</ActionTooltip.tooltip>
 						</ImageView>
 						<ImageView styleClass="sleep">
@@ -75,6 +88,10 @@
 								<Tooltip text="Reproduce" />
 							</ActionTooltip.tooltip>
 						</ImageView>
+						
+	
+
+
 					</children>
 				</HBox>
 				<ProgressBar fx:id="healthBar" />

@@ -33,57 +33,43 @@ import java.util.Set;
 public class AnimalControl<T extends Animal> extends HBox {
 	private T animal;	// Animal subclass: Cat, Dog, etc...
 	
-    @FXML private Label animalNameInfo,animalTypeInfo,animalAge;	// Animal info labels in .fxml
+    @FXML private Label animalNameInfo,animalTypeInfo,animalAge,animalSize;	// Animal info labels in .fxml
     @FXML private ProgressBar healthBar, moodBar;	// stat bars in .fxml
     @FXML private ProgressIndicator ageIndicator;
     
     @FXML private ImageView animalPortrait;	// Animal portrait in .fxml
     
-    SimpleStringProperty ageNumberUpdater;
-    SimpleDoubleProperty ageIndicatorUpdater,healthIndicatorUpdater;
+    SimpleStringProperty ageNumberUpdater, sizeNumberUpdater;
+    SimpleDoubleProperty ageIndicatorUpdater,healthIndicatorUpdater,moodIndicatorUpdater;
+    
+    
     
     /**
      * Set up view elements
      */
     @FXML private void initialize() {
     	
+        this.animal.setName(this.getRandomName());	// Set random name
+       
 
-    	
-
-    	
+    	this.healthBar.setMaxHeight(20);
     	this.moodBar.setMaxWidth(20000);	// Will adapt to container width
     	this.moodBar.setProgress(1);		// Starts full
-    	
-    	this.healthBar.setMaxHeight(20);
     	this.moodBar.setMaxHeight(20);
-
-        this.animal.setName(this.getRandomName());	// Set random name
-
-    	this.animal.setAge(Math.random()*this.animal.getLifeExpectancy());	// Set random age TODO: change
-
-    	this.ageNumberUpdater = new SimpleStringProperty();
-    	this.animalAge.textProperty().bind(this.ageNumberUpdater);
-
-    	this.ageIndicatorUpdater = new SimpleDoubleProperty();
-    	this.ageIndicator.progressProperty().bind(ageIndicatorUpdater);
-/*
-    	this.healthIndicatorUpdater = new SimpleDoubleProperty(); 
-    	this.healthBar.progressProperty().bind(healthIndicatorUpdater);
-    	this.healthBar.setProgress(1);		// Starts full
-*/
-    	this.healthBar.setProgress(1);		// Starts full
-    	this.healthBar.setMaxWidth(this.animal.getMaxHealth() * 5);
-    	this.refreshStats(0);
-    	
-    	this.ageIndicator.setPrefWidth(60);
+       	this.ageIndicator.setPrefWidth(60);
     	this.ageIndicator.setPrefHeight(60);
         
+    	this.setUpUpdaters();
     	
-       // animalAge.setText(String.valueOf((int)this.animal.getAge()));
-        
+    	this.animal.setMoodPercentage(100*Math.random());
+        this.animal.setHealth((4*Math.random()+6)/10 *this.animal.getMaxHealth()); // random health between 60% an d100%
+    	this.refreshStats(0);	// refresh stats with no duration change
+
         // Set name and label in view
     	animalNameInfo.setText(animal.getName());
     	animalTypeInfo.setText("the " + TextUtils.capitalize(animal.getType()));
+    	
+    	
     	
     	this.getStyleClass().add(animal.getType());	// make animal type the style class for the root node (for css)
     	
@@ -95,8 +81,6 @@ public class AnimalControl<T extends Animal> extends HBox {
     	this.changePortraitColor(2*Math.random()-1);
 
     	this.setUpActionButtons();
-    	
-    	
     }
 
     /**
@@ -166,9 +150,24 @@ public class AnimalControl<T extends Animal> extends HBox {
     	
     	switch (action)
     	{
-    	case "color":
-    		this.changePortraitColor(2*Math.random()-1);
-    		break;
+	    	case "color":
+	    		this.changePortraitColor(2*Math.random()-1);
+	    		break;
+	    		
+	    	case "eat":
+	    		this.animal.changeHealthBy(10);
+	    		break;
+	    	
+			case "smoke":
+				this.animal.changeHealthBy(-10);
+				break;
+				
+			case "mask":
+				this.animal.toggleMask();
+				this.animal.changeMoodPercentageBy(10);
+				break;
+				
+				
     	}
     }
     
@@ -234,10 +233,32 @@ public class AnimalControl<T extends Animal> extends HBox {
 		String ageString = (String.valueOf((int) (Math.floor(this.animal.getAge()))));
 		this.ageNumberUpdater.setValue(ageString);
 		
-		
-		this.ageIndicatorUpdater.setValue((this.animal.getAge()-1)/this.animal.getLifeExpectancy());
-		
-    	//this.healthIndicatorUpdater.setValue(this.animal.getHealth()*5);
+		this.ageIndicatorUpdater.setValue( 1 - this.animal.getAge()/this.animal.getLifeExpectancy());
+
+    	this.healthBar.setMaxWidth( this.animal.getMaxHealth()  * 4);
+
+    	this.healthIndicatorUpdater.setValue(this.animal.getHealth()/this.animal.getMaxHealth());
+    	
+    	this.sizeNumberUpdater.setValue( String.valueOf((int)(this.animal.getSize()))  + " cm" );
 	}
+
+	
+	public void setUpUpdaters() {
+    	this.healthIndicatorUpdater = new SimpleDoubleProperty(1); // Starts at 1 (full)
+    	this.healthBar.progressProperty().bind(healthIndicatorUpdater);
+    	
+    	this.ageNumberUpdater = new SimpleStringProperty();
+    	this.animalAge.textProperty().bind(this.ageNumberUpdater);
+
+    	this.ageIndicatorUpdater = new SimpleDoubleProperty(1); // starts full
+    	this.ageIndicator.progressProperty().bind(ageIndicatorUpdater);
+
+    	this.sizeNumberUpdater = new SimpleStringProperty();
+    	this.animalSize.textProperty().bind( sizeNumberUpdater );
+    	
+
+	}
+	
+
     
 }

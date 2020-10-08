@@ -96,8 +96,10 @@ public class AnimalsControl extends VBox{
 		this.mainRegion = p;
 	}
 	
-	void increaseAges(double duration)
+	void increaseAges(double refreshInterval)
 	{
+		double duration = refreshInterval/5;
+		
 		ObservableList<Node> nodes = this.getChildren();
 		
 		for (Node n:nodes)
@@ -125,6 +127,8 @@ public class AnimalsControl extends VBox{
 		
 		for (AnimalControl<Animal> a:animalRegions)
 		{
+			System.out.println(a.getAnimal().getHealth());
+			
 			if(!a.getAnimal().isAlive()) {
 				deadAnimalRegions.add(a);
 			}
@@ -146,6 +150,9 @@ public class AnimalsControl extends VBox{
 			AnimalControl<Animal> temp = (AnimalControl<Animal>) nodes.get(i);	
 			animalRegions.add(temp );
 		}
+		
+		
+		
 		return animalRegions;
 	}
 	

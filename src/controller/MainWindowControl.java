@@ -1,15 +1,11 @@
 package controller;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import animals.Animal;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.animation.Timeline;
-import javafx.collections.ObservableList;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
@@ -52,15 +48,14 @@ public class MainWindowControl extends BorderPane{
 	public void createTimeline() {
 		MainWindowControl me = this;
 		
-		double interval = 0.2;
+		double refreshInterval = 0.2;
 		
 		this.mainTimeline = new Timeline(
-			    new KeyFrame(Duration.seconds(interval), e -> {
-			    	me.getAnimalsRegion().increaseAges(interval);
+			    new KeyFrame(Duration.seconds(refreshInterval), e -> {
+			    	me.getAnimalsRegion().increaseAges(refreshInterval);
 					
 			    	// Need to removeAll separately for thread concurrency
 					me.getAnimalsRegion().getChildren().removeAll(this.getAnimalsRegion().getDeadAnimals());
-					
 					
 					me.getAnimalsRegion().repopulateTo(this.getAnimalsRegion().getMaxAnimalRegions());
 			    })

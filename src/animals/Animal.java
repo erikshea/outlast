@@ -63,7 +63,7 @@ public class Animal {
 	 */
 	public boolean isAlive()
 	{
-		return !(this.getHealth() == 0);
+		return !(this.getHealth() <= 0);
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public class Animal {
 	/**
 	 * mask action: Removes mask if on, and vise versa
 	 */
-	public void doActionToggleMask() {
+	public void toggleMask() {
 		this.hasMask = !this.hasMask;
 	}
 
@@ -173,9 +173,17 @@ public class Animal {
 	/*
 	 * Change health by ammount (negative or positive)
 	 */
-	protected void changeHealthBy(int ammount)
+	public void changeHealthBy(int ammount)
 	{
 		this.setHealth(this.getHealth() + ammount);
+	}
+	
+	/*
+	 * Change mood by ammount (negative or positive)
+	 */
+	public void changeMoodPercentageBy(double ammount)
+	{
+		this.setMoodPercentage(this.getMoodPercentage() + ammount);
 	}
 	
 	/*
@@ -260,20 +268,30 @@ public class Animal {
 		if (h <= this.getMaxHealth())
 		{
 			this.health = h;
+		} else
+		{
+			this.health = this.getMaxHealth();
 		}
 	}
 	
 	/**
 	 * Sets age, if above life expectancy, die
-	 * @param a
+	 * @param newAge
 	 */
-	public void setAge(double a) {
-		if (this.lifeExpectancy < a)
+	public void setAge(double newAge) {
+		double oldMaxHealth = this.getMaxHealth();
+		
+		this.age = newAge;
+		
+		double newHealth = this.getMaxHealth()/oldMaxHealth * this.getHealth();
+		
+		
+		this.setHealth(newHealth); // current health changes in proportion with age
+
+		if (this.lifeExpectancy < this.age)
 		{
 			this.setHealth(0);
 		}
-		
-		this.age = a;
 	}
 	
 	public void setName(String n) {
@@ -284,6 +302,8 @@ public class Animal {
 		return this.name;
 	}
 
+
+	
 	public String getColor() {
 		return this.color;
 	}
