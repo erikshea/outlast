@@ -14,38 +14,22 @@ import javafx.scene.control.MenuItem;
  */
 public class MenuBarControl extends MenuBar {
 	
-    @FXML private MenuItem refreshAnimals,exit,test;
-    @FXML private MainWindowControl mainRegion;
+    @FXML private MenuItem refreshAnimals,exit;
+    private MainWindowControl mainController;
 	
 	public void initialize()
 	{
 		MenuBarControl me = this;
 
 		// "Refresh Animals" menu item
-		this.refreshAnimals.setOnAction(new EventHandler<ActionEvent>() { 
-            public void handle(ActionEvent e) 
-            { 
+		this.refreshAnimals.setOnAction( e -> { 
             	// delete them all
-            	me.mainRegion.getAnimalsRegion().getChildren().clear();
+            	me.mainController.getAnimalsRegion().getChildren().clear();
             	// add new ones
-            	me.mainRegion.getAnimalsRegion().spawnRandomAnimals(8);
-            } 
+            	me.mainController.getAnimalsRegion().repopulateTo(8); // TODO: get rid of explicit number
         }); 
         
-        
-    
-        this.exit.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-                System.exit(0);
-            }
-        });
-        
-        this.test.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-            	Node test = me.mainRegion.getAnimalsRegion().getChildren().get(0);
-            	me.mainRegion.getAnimalsRegion().getChildren().remove(test);
-            }
-        });
+        this.exit.setOnAction( e -> { System.exit(0); }  );
 	}
 	
     /**
@@ -54,7 +38,7 @@ public class MenuBarControl extends MenuBar {
      */
 	public MenuBarControl()
 	{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("menubar_control.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("menubarControl.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         
@@ -66,11 +50,11 @@ public class MenuBarControl extends MenuBar {
 	}
 
 	/**
-	 * Sets mainPane to a reference to the main window pane (to communicate with other controllers)
+	 * Sets mainRegion to a reference to the main window pane (to communicate with other controllers)
 	 * @param p main window pane
 	 */
-	public void setMainRegion(MainWindowControl p)
+	public void setMainController(MainWindowControl m)
 	{
-		this.mainRegion = p;
+		this.mainController = m;
 	}
 }

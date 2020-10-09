@@ -7,14 +7,14 @@ public class Animal {
 	protected double age;
 	protected int lifeExpectancy;
 	protected double health;			// Current health
-	protected double baseMaxHealth;		// Health at birth, maxHealth depends on size
-	protected double moodPercentage;		// Current mood as a percentage
-
+	protected double baseMaxHealth;		// Health at birth, max health grows with age.
+	protected double energy;		// Current energy
+	protected double baseMaxEnergy;	// Energy at birth, max energy grows with age.
 	protected double foodPercentage;
 	
-	protected int excrementPercentage;
+	protected double excrementPercentage;
 
-	protected double baseMaxSize;	// max attainable size
+	protected double baseMaxSize;	// max attainable size. size depends on age 
 	
 	protected boolean hasMask;
 	protected String hairColor;
@@ -32,7 +32,7 @@ public class Animal {
 	 */
 	public void reset() {
 		this.age = 0;
-		this.moodPercentage = this.foodPercentage = 100;
+		this.foodPercentage = 100;
 		this.excrementPercentage = 0;
 		this.hasMask = false;
 	}
@@ -66,18 +66,7 @@ public class Animal {
 		return !(this.getHealth() <= 0);
 	}
 	
-	/**
-	 * Sets current excrement level as a percentage. Negative values are reset to 0.
-	 * @param p 
-	 */
-	public void setExcrementPercentage(int p) {
 
-		if (p < 0) {
-			p = 0;
-		}
-		
-		this.excrementPercentage = p;
-	}
 
 	/**
 	 * Sets an animal as dead.
@@ -142,7 +131,6 @@ public class Animal {
 	}
 
 
-
 	/**
 	 * For reproduction purposes, return a random parent
 	 * @param partner another cat with which to reproduce
@@ -179,17 +167,19 @@ public class Animal {
 	}
 	
 	/*
-	 * Change mood by ammount (negative or positive)
+	 * Change energy by ammount (negative or positive)
 	 */
-	public void changeMoodPercentageBy(double ammount)
+	public void changeEnergyBy(int ammount)
 	{
-		this.setMoodPercentage(this.getMoodPercentage() + ammount);
+		this.setEnergy(this.getEnergy() + ammount);
 	}
+	
+
 	
 	/*
 	 * Change age by ammount (negative or positive)
 	 */
-	protected void changeAgeBy(int ammount)
+	public void changeAgeBy(double ammount)
 	{
 		this.setAge(this.getAge() + ammount);
 	}
@@ -238,6 +228,17 @@ public class Animal {
 		return this.baseMaxHealth * this.getGrowthRatio();
 	}
 	
+	
+	/**
+	 * Maximum health at current stage of growth
+	 * @return
+	 */
+	public double getMaxEnergy()
+	{
+		return this.baseMaxEnergy * this.getGrowthRatio();
+	}
+	
+	
 	/**
 	 * Size at birth
 	 * @return
@@ -247,29 +248,15 @@ public class Animal {
 		return this.baseMaxSize/4;
 	}
 
-	
-	/**
-	 * handle passage of time
-	 * @param duration
-	 */
-	public void increaseAgeBy( double duration ) {
-		//double healthIncreaseRatio = (this.getAge() + duration)/this.getAge();	
-
-		//this.setHealth(healthIncreaseRatio * this.getHealth());
-		
-		this.setAge(this.age + duration);
-	}
 
 	/**
 	 * Sets health, if above max health resets to max health
 	 * @param h
 	 */
 	public void setHealth(double h) {
-		if (h <= this.getMaxHealth())
-		{
+		if (h <= this.getMaxHealth()) {
 			this.health = h;
-		} else
-		{
+		} else {
 			this.health = this.getMaxHealth();
 		}
 	}
@@ -278,21 +265,27 @@ public class Animal {
 	 * Sets age, if above life expectancy, die
 	 * @param newAge
 	 */
-	public void setAge(double newAge) {
+	protected void setAge(double newAge) {
+		this.changeExcrementPercentageBy((newAge - this.age)*15);
+		
 		double oldMaxHealth = this.getMaxHealth();
+		double oldMaxEnergy = this.getMaxEnergy();
 		
 		this.age = newAge;
 		
-		double newHealth = this.getMaxHealth()/oldMaxHealth * this.getHealth();
+		// current health changes by a factor of newMaxHealth/oldMaxHealth
+		this.setHealth(this.getMaxHealth()/oldMaxHealth * this.getHealth());
 		
+		// current energy changes by a factor of newMaxHealth/oldMaxHealth
+		this.setEnergy(this.getMaxEnergy()/oldMaxEnergy * this.getEnergy());
 		
-		this.setHealth(newHealth); // current health changes in proportion with age
 
 		if (this.lifeExpectancy < this.age)
 		{
 			this.setHealth(0);
 		}
 	}
+
 	
 	public void setName(String n) {
 		this.name = n;
@@ -333,19 +326,41 @@ public class Animal {
 		return this.type;
 	}
 	
-	public double getMoodPercentage() {
-		return this.moodPercentage;
+	public double getEnergy() {
+		return this.energy;
 	}
 
-	public void setMoodPercentage(double m) {
-		this.moodPercentage = m;
+	public void setEnergy(double m) {
+		this.energy = m;
 	}
 
 	public double getLifeExpectancy() {
 		return this.lifeExpectancy;
 	}
-	public int getExcrementPercentage() {
+	
+	
+	public double getExcrementPercentage() {
 		return this.excrementPercentage;
 	}
+	
+	/**
+	 * Sets current excrement level as a percentage. Negative values are reset to 0.
+	 * @param p 
+	 */
+	public void setExcrementPercentage(double p) {
 
+		if (p < 0) {
+			p = 0;
+		}
+		
+		if (p>=100)
+		{
+			this.setHealth(0);
+		}
+		this.excrementPercentage = p;
+	}
+	
+	public void changeExcrementPercentageBy(double p) {
+		this.setExcrementPercentage(this.excrementPercentage + p);
+	}
 }

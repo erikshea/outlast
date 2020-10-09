@@ -7,12 +7,11 @@
 
 <fx:root type="javafx.scene.control.MenuBar"
 	xmlns:fx="http://javafx.com/fxml"
-	stylesheets="@menubar_control.css">
+	stylesheets="@menubarControl.css">
 	<menus>
 		<Menu text="File">
 			<MenuItem fx:id="refreshAnimals" text="Refresh Animals" />
 			<MenuItem fx:id="exit" text="Quit" />
-			<MenuItem fx:id="test" text="Test" />
 		</Menu>
 	</menus>
 </fx:root>

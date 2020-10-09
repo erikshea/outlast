@@ -5,17 +5,16 @@ import animals.*;
 import util.TextUtils;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.image.Image;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,15 +33,15 @@ public class AnimalControl<T extends Animal> extends HBox {
 	private T animal;	// Animal subclass: Cat, Dog, etc...
 	
     @FXML private Label animalNameInfo,animalTypeInfo,animalAge,animalSize;	// Animal info labels in .fxml
-    @FXML private ProgressBar healthBar, moodBar;	// stat bars in .fxml
-    @FXML private ProgressIndicator ageIndicator;
+    @FXML private ProgressBar healthBar, energyBar;	// stat bars in .fxml
+    @FXML private ProgressIndicator ageIndicator, excrementIndicator;
     
     @FXML private ImageView animalPortrait;	// Animal portrait in .fxml
     
+    private MainWindowControl mainController;
+    
     SimpleStringProperty ageNumberUpdater, sizeNumberUpdater;
-    SimpleDoubleProperty ageIndicatorUpdater,healthIndicatorUpdater,moodIndicatorUpdater;
-    
-    
+    SimpleDoubleProperty ageIndicatorUpdater,healthIndicatorUpdater,energyIndicatorUpdater,excrementIndicatorUpdater;
     
     /**
      * Set up view elements
@@ -51,25 +50,15 @@ public class AnimalControl<T extends Animal> extends HBox {
     	
         this.animal.setName(this.getRandomName());	// Set random name
        
-
-    	this.healthBar.setMaxHeight(20);
-    	this.moodBar.setMaxWidth(20000);	// Will adapt to container width
-    	this.moodBar.setProgress(1);		// Starts full
-    	this.moodBar.setMaxHeight(20);
-       	this.ageIndicator.setPrefWidth(60);
-    	this.ageIndicator.setPrefHeight(60);
-        
     	this.setUpUpdaters();
     	
-    	this.animal.setMoodPercentage(100*Math.random());
-        this.animal.setHealth((4*Math.random()+6)/10 *this.animal.getMaxHealth()); // random health between 60% an d100%
-    	this.refreshStats(0);	// refresh stats with no duration change
+    	this.animal.setEnergy(this.animal.getMaxEnergy()/2);
+        this.animal.setHealth((2*Math.random()+3)/5 *this.animal.getMaxHealth()); // random health between 60% and 100%
+    	this.refreshStats(0);	// reset stats by refreshing with no duration change
 
         // Set name and label in view
     	animalNameInfo.setText(animal.getName());
     	animalTypeInfo.setText("the " + TextUtils.capitalize(animal.getType()));
-    	
-    	
     	
     	this.getStyleClass().add(animal.getType());	// make animal type the style class for the root node (for css)
     	
@@ -90,7 +79,7 @@ public class AnimalControl<T extends Animal> extends HBox {
     public AnimalControl(T a) {
         this.animal = a;
         
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("animal_control.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("animalControl.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         
@@ -99,7 +88,7 @@ public class AnimalControl<T extends Animal> extends HBox {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-       
+        
     }
     
     /**
@@ -146,8 +135,6 @@ public class AnimalControl<T extends Animal> extends HBox {
      */
     public void executeAction(String action)
     {
-    	System.out.println(action);
-    	
     	switch (action)
     	{
 	    	case "color":
@@ -155,16 +142,26 @@ public class AnimalControl<T extends Animal> extends HBox {
 	    		break;
 	    		
 	    	case "eat":
-	    		this.animal.changeHealthBy(10);
+	    		this.animal.changeHealthBy(5);
 	    		break;
 	    	
 			case "smoke":
-				this.animal.changeHealthBy(-10);
+				this.animal.changeHealthBy(-5);
+				this.animal.changeEnergyBy(5);
 				break;
 				
 			case "mask":
 				this.animal.toggleMask();
-				this.animal.changeMoodPercentageBy(10);
+				this.animal.changeHealthBy(5);
+				this.animal.changeEnergyBy(-5);
+				break;
+				
+			case "exercise":
+				this.animal.changeEnergyBy(-5);
+				break;
+				
+			case "bathroom":
+				this.animal.changeExcrementPercentageBy(-5);
 				break;
 				
 				
@@ -179,43 +176,28 @@ public class AnimalControl<T extends Animal> extends HBox {
      */
     private void setUpActionButtons()
     {
-
-    	AnimalControl<T> me = this;
-    	
     	// css fetch all action ImageViews
-    	Set<Node> actionImageViews = this.lookupAll(".animal-action-bar ImageView");
+    	Set<Node> actionImageViewNodes = this.lookupAll(".animal-action-bar ImageView");
 
-    	for (Node actionImageView:actionImageViews )
+    	for (Node actionImageViewNode:actionImageViewNodes )
     	{
-    		ImageView v = (ImageView) actionImageView;	// Cast node to ImageView 
+    		ImageView actionImageView = (ImageView) actionImageViewNode;	// Cast node to ImageView 
     		
-    		// Set icon
-    		Image actionIcon = new Image("file:@../../resources/images/actions/" + animal.getType() + "/" + v.getStyleClass().get(1) + ".png");
-    		v.setPickOnBounds(true);	// entire image bounding box should be clickable, not just visible parts
-    		v.setImage(actionIcon);
+    		// image path depends on animal type, and action style class defined in .fxml
+    		Image actionIcon = new Image("file:@../../resources/images/actions/" + animal.getType() + "/" + actionImageView.getStyleClass().get(1) + ".png");
+    		actionImageView.setPickOnBounds(true);	// entire image bounding box should be clickable, not just visible parts
+    		actionImageView.setImage(actionIcon);		
     		
-    		v.setOnMouseEntered(new EventHandler<MouseEvent>() {
-    		    @Override
-    		    public void handle(MouseEvent t) {
-    		    	v.setOpacity(0.3);								// Hover in opacity effect
-    		    }
-    		});
+    		actionImageView.setOnMouseEntered( e-> { actionImageView.setOpacity(0.3); }); // lambda event restores opacity on hover in
     		
-    		v.setOnMouseExited(new EventHandler<MouseEvent>() {	
-    		    @Override
-    		    public void handle(MouseEvent t) {
-    		    	v.setOpacity(1);								// Restore opacity on hover out
-    		    }
-    		});
+    		actionImageView.setOnMouseExited( e-> { actionImageView.setOpacity(1); }); // lambda event restores opacity on hover out
     		
-    		v.setOnMousePressed(new EventHandler<MouseEvent>() {
-    		    @Override
-    		    public void handle(MouseEvent t) {
-    		    	
-    		    	String action = v.getStyleClass().get(1);	// action name (class) defined in .fxml 
-    		    	me.executeAction(action);
-    		    }
-    		});
+    		
+    		actionImageView.setOnMousePressed( e-> {							// lambda event handles click on action icons
+    		    	String action = actionImageView.getStyleClass().get(1);	// action name (class) defined in .fxml 
+    		    	this.executeAction(action);
+    		}
+    		);
     		
     	}
     }
@@ -228,37 +210,49 @@ public class AnimalControl<T extends Animal> extends HBox {
 	
 	void refreshStats(double duration)
 	{
-		this.animal.increaseAgeBy(duration);
+		this.animal.changeAgeBy(duration);
 		
 		String ageString = (String.valueOf((int) (Math.floor(this.animal.getAge()))));
 		this.ageNumberUpdater.setValue(ageString);
-		
 		this.ageIndicatorUpdater.setValue( 1 - this.animal.getAge()/this.animal.getLifeExpectancy());
+		this.excrementIndicatorUpdater.setValue( this.animal.getExcrementPercentage()/100);
 
     	this.healthBar.setMaxWidth( this.animal.getMaxHealth()  * 4);
-
     	this.healthIndicatorUpdater.setValue(this.animal.getHealth()/this.animal.getMaxHealth());
+    	
+    	this.energyBar.setMaxWidth(this.animal.getMaxEnergy()  * 4);
+    	this.energyIndicatorUpdater.setValue(this.animal.getEnergy()/this.animal.getMaxEnergy());
     	
     	this.sizeNumberUpdater.setValue( String.valueOf((int)(this.animal.getSize()))  + " cm" );
 	}
 
 	
 	public void setUpUpdaters() {
-    	this.healthIndicatorUpdater = new SimpleDoubleProperty(1); // Starts at 1 (full)
+    	this.healthIndicatorUpdater = new SimpleDoubleProperty(1); 	// full at initialization
     	this.healthBar.progressProperty().bind(healthIndicatorUpdater);
+    	
+    	this.energyIndicatorUpdater = new SimpleDoubleProperty(1);	// full at initialization
+    	this.energyBar.progressProperty().bind(energyIndicatorUpdater);
     	
     	this.ageNumberUpdater = new SimpleStringProperty();
     	this.animalAge.textProperty().bind(this.ageNumberUpdater);
 
     	this.ageIndicatorUpdater = new SimpleDoubleProperty(1); // starts full
     	this.ageIndicator.progressProperty().bind(ageIndicatorUpdater);
+    	
+    	this.excrementIndicatorUpdater = new SimpleDoubleProperty(0);
+    	this.excrementIndicator.progressProperty().bind( excrementIndicatorUpdater );
 
     	this.sizeNumberUpdater = new SimpleStringProperty();
     	this.animalSize.textProperty().bind( sizeNumberUpdater );
-    	
-
 	}
 	
-
-    
+	public void setMainController(MainWindowControl mc) {
+		this.mainController = mc;
+	}
+	
+	public MainWindowControl getMainController() {
+		return this.mainController;
+	}
+	
 }

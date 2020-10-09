@@ -17,17 +17,21 @@ import javafx.util.Duration;
 public class MainWindowControl extends BorderPane{
 	@FXML private AnimalsControl animalsRegion;
 	@FXML private MenuBarControl mainMenuBar;
+	@FXML private MiniConsole console;
+	
 	Timeline mainTimeline;
 	
 	
 	public void initialize() {
-
-		this.mainMenuBar.setMainRegion(this);
+		this.mainMenuBar.setMainController(this);	// TODO: decouple controllers with mediator pattern
+		this.animalsRegion.setMainController(this);	//
+		this.animalsRegion.repopulateTo(8);	// TODO: move to AnimalsControl when controller mediator done
+		
 		this.createTimeline();
 	}
 	
 	public MainWindowControl(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("main_window_control.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("mainWindowControl.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         
@@ -36,6 +40,9 @@ public class MainWindowControl extends BorderPane{
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+        
+
+
 	}
 	
 	
@@ -46,22 +53,26 @@ public class MainWindowControl extends BorderPane{
 	
 	
 	public void createTimeline() {
-		MainWindowControl me = this;
-		
-		double refreshInterval = 0.2;
+		double refreshInterval = 0.1;
 		
 		this.mainTimeline = new Timeline(
-			    new KeyFrame(Duration.seconds(refreshInterval), e -> {
-			    	me.getAnimalsRegion().increaseAges(refreshInterval);
+			    new KeyFrame(Duration.seconds(refreshInterval), e -> {	// lambda handler allows access to "this"
+			    	this.getAnimalsRegion().increaseAges(refreshInterval);
 					
-			    	// Need to removeAll separately for thread concurrency
-					me.getAnimalsRegion().getChildren().removeAll(this.getAnimalsRegion().getDeadAnimals());
+			    	// Need to remove all separately for thread concurrency
+			    	this.getAnimalsRegion().clearDeadAnimals();
 					
-					me.getAnimalsRegion().repopulateTo(this.getAnimalsRegion().getMaxAnimalRegions());
+					// replace dead animals
+			    	this.getAnimalsRegion().repopulateTo(this.getAnimalsRegion().getMaxAnimalRegions());
 			    })
 			);
 		this.mainTimeline.setCycleCount(Animation.INDEFINITE);
 		this.mainTimeline.play();
+	}
+	
+	public MiniConsole getConsole()
+	{
+		return this.console;
 	}
 	
 }

@@ -2,17 +2,16 @@
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.control.Label?>
 <?import fxml.ActionTooltip?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.layout.StackPane?>
 
 <fx:root type="javafx.scene.layout.HBox"
 	xmlns:fx="http://javafx.com/fxml" styleClass="animal-region"
-	stylesheets="@animal_control.css">
+	stylesheets="@animalControl.css">
 	<children>
 
 		<ImageView fx:id="animalPortrait" fitHeight="100"
@@ -68,11 +67,15 @@
 								<Tooltip text="Toggle mask" />
 							</ActionTooltip.tooltip>
 						</ImageView>
-						<ImageView styleClass="bathroom">
-							<ActionTooltip.tooltip>
-								<Tooltip text="Go to the bathroom" />
-							</ActionTooltip.tooltip>
-						</ImageView>
+						<StackPane alignment="TOP_RIGHT">
+							<ProgressIndicator fx:id="excrementIndicator"/>
+							<ImageView styleClass="bathroom">
+								<ActionTooltip.tooltip>
+									<Tooltip text="Perform exercise" />
+								</ActionTooltip.tooltip>
+							</ImageView>
+						</StackPane>
+						
 						<ImageView styleClass="exercise">
 							<ActionTooltip.tooltip>
 								<Tooltip text="Perform exercise" />
@@ -88,14 +91,10 @@
 								<Tooltip text="Reproduce" />
 							</ActionTooltip.tooltip>
 						</ImageView>
-						
-	
-
-
 					</children>
 				</HBox>
 				<ProgressBar fx:id="healthBar" />
-				<ProgressBar fx:id="moodBar" />
+				<ProgressBar fx:id="energyBar" />
 			</children>
 		</VBox>
 

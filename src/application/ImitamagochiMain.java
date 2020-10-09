@@ -5,13 +5,14 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
+
 public class ImitamagochiMain extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			// Main window is handled by its own controller
 			MainWindowControl mainWindow = new MainWindowControl();
-			Scene scene = new Scene(mainWindow, 800, 826);
+			Scene scene = new Scene(mainWindow, 800, 950);
 			primaryStage.setTitle("Imitamagotchi");
 
 			primaryStage.setScene(scene);

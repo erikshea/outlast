@@ -95,15 +95,25 @@
 	-fx-padding: 10 20 0 0;	
 	-fx-spacing: 10;
 }
+.animal-action-bar ImageView {
+	-fx-background-color: red;
+	-fx-padding: 15 0 0 0;	
+}
+
+.animal-action-bar StackPane {
+	-fx-pref-height: 40px;
+}
 
 ProgressBar {
-    -fx-padding: 5 0 0 0;
 	-fx-height: 10px;
-
 }
 #healthBar{
-	
+	-fx-max-height: 20px;
 	-fx-accent: red;
+}
+
+#energyBar{
+	-fx-max-height: 20px;
 }
 
 #animalAge{
@@ -123,7 +133,7 @@ ProgressBar {
 #animalAge{
     -fx-font-size: 22px;
     -fx-font-weight: bold;
-    -fx-padding: -5 0 0 0;
+    -fx-padding: -5 0 0 5;
 }
 
 #ageIndicator .percentage {
@@ -131,10 +141,16 @@ ProgressBar {
 }
 
 #ageIndicator  {
-	-fx-max-width:30;
+	-fx-max-width: 30;
     -fx-padding: 0 -3 0 0;
 	-fx-accent: #9f9f9f;
 }
 
+#excrementIndicator {
+	-fx-max-width: 15;
+	-fx-accent: #714223;
+}
 
-
+#excrementIndicator .percentage {
+    -fx-fill:null;
+}

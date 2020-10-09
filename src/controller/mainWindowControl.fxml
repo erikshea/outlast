@@ -2,14 +2,18 @@
 
 <?import controller.AnimalsControl?>
 <?import controller.MenuBarControl?>
-
+<?import controller.MiniConsole?>
+<?import javafx.scene.control.TextArea?>
 <fx:root type="javafx.scene.layout.BorderPane"
 	xmlns:fx="http://javafx.com/fxml" styleClass="animal-region"
-	stylesheets="@main_window_control.css">
+	stylesheets="@mainWindowControl.css">
 	<top>
 		<MenuBarControl fx:id="mainMenuBar"/>
 	</top>
 	<center>
 		<AnimalsControl fx:id="animalsRegion"/>
 	</center>
+	<bottom>
+		<MiniConsole fx:id="console" lineHeight="7"/>
+	</bottom>
 </fx:root>
