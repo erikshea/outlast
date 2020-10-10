@@ -47,18 +47,26 @@ public class MiniConsole extends AnchorPane {
         }
     }
     
-    
-    public void printLn(String line)
+    public void printLine(String line)
     {
-    	ObservableList<Node> workingCollection = FXCollections.observableArrayList(this.consolePane.getChildren());
-    	TextFlow t = (TextFlow) workingCollection.get(workingCollection.size()-1);
+    	ObservableList<Node> consoleLines = FXCollections.observableArrayList(this.consolePane.getChildren());
+    	TextFlow consoleLine = (TextFlow) consoleLines.get(0);	// Topmost line will get overwritten
     	Text lineText = new Text(line);
     	
-    	t.getChildren().clear();
-    	t.getChildren().add(lineText);
+    	consoleLine.getChildren().clear();						// Clear old line text
+    	consoleLine.getChildren().add(lineText);
     	
-    	Collections.rotate(workingCollection, 1);
-    	this.consolePane.getChildren().setAll(workingCollection);
+    	Collections.rotate(consoleLines, -1);					// Each line shifts one position back, rotating the top one to the bottom
+    	this.consolePane.getChildren().setAll(consoleLines);	// Clear all old lines, replace with new ones
+    }
+    
+
+    
+    public void clear()
+    {
+    	for (Node line: this.consolePane.getChildren()) {
+    		((TextFlow) line).getChildren().clear();	// Cast to TextFlow to access children
+    	}
     }
 	
 }

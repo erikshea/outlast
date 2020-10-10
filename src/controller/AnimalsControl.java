@@ -3,18 +3,14 @@ package controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import animals.Animal;
 import animals.Cat;
 import animals.Dog;
 import animals.Dragon;
 import animals.Monkey;
 import javafx.collections.ObservableList;
-import javafx.css.Styleable;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 
 /**
@@ -24,8 +20,7 @@ import javafx.scene.layout.VBox;
  */
 public class AnimalsControl extends VBox{
     private MainWindowControl mainController;
-    
-    private int maxAnimalRegions=8;
+    private int maxPopulation;
     
     /**
      * Spawn initial animals
@@ -58,7 +53,8 @@ public class AnimalsControl extends VBox{
      */
 	public void spawnRandomAnimals(int ammount)
 	{
-
+		this.maxPopulation = 8;
+		
 		int rand;
 		for(int i = 0;i<ammount;i++)
 		{
@@ -82,49 +78,37 @@ public class AnimalsControl extends VBox{
 	 * @param <T> Animal subtype
 	 * @param a Animal subtype
 	 */
-	private <T extends Animal> void addAnimalControl(T a) {
+	public <T extends Animal> void addAnimalControl(T a) {
 		AnimalControl<T> ac = new AnimalControl<>(a);
 		
 		ac.setMainController(this.mainController);
 
-		this.mainController.getConsole().printLn(a.getName() + " the " + a.getType() + " is born.");
+		this.mainController.getConsole().printLine(a.getName() + " the " + a.getType() + " is born.");
 		
 		this.getChildren().add(ac);
 	}
 
 	/**
-	 * Sets mainPane to a reference to the main window pane (to communicate with other controllers)
-	 * @param p main window pane
+	 * Sets a reference to the main controller (for console, and to communicate with other controllers)
+	 * @param c main window controller
 	 */
-	void setMainController(MainWindowControl p)
+	void setMainController(MainWindowControl c)
 	{
-		this.mainController = p;
+		this.mainController = c;
 	}
 	
-	void increaseAges(double refreshInterval)
+	void increaseAges(double years)
 	{
-		double duration = refreshInterval/5;
-		
 		ObservableList<Node> nodes = this.getChildren();
 		
 		for (Node n:nodes)
 		{
 			@SuppressWarnings("unchecked")
-			AnimalControl<Animal> a = (AnimalControl<Animal>) n;
+			AnimalControl<Animal> animalRegion = (AnimalControl<Animal>) n;
 			
-			a.refreshStats(duration);
+			animalRegion.refreshStats(years);
 		}
 	}
-	
-	
-	void repopulateTo(int newAmmount)
-	{
-
-		int numberToMake = newAmmount - this.getChildren().size();
-		
-		this.spawnRandomAnimals(numberToMake);
-	}
-	
 	
 	void clearDeadAnimals()
 	{
@@ -136,7 +120,7 @@ public class AnimalsControl extends VBox{
 		{
 			if(!a.getAnimal().isAlive()) {
 				deadAnimalRegions.add(a);
-				this.mainController.getConsole().printLn(a.getAnimal().getName() + " the " + a.getAnimal().getType() + " has died.");
+				this.mainController.getConsole().printLine(a.getAnimal().getName() + " the " + a.getAnimal().getType() + " has died.");
 			}
 		}
 		this.getChildren().removeAll(deadAnimalRegions);
@@ -151,25 +135,16 @@ public class AnimalsControl extends VBox{
 		ObservableList<Node> nodes = this.getChildren();
 
 		for (int i=0;i<nodes.size();i++) {
-			
 			@SuppressWarnings("unchecked")
 			// Have to redeclare temp at every iteration to suppress warnings
 			AnimalControl<Animal> temp = (AnimalControl<Animal>) nodes.get(i);	
 			animalRegions.add(temp );
 		}
 		
-		
 		return animalRegions;
 	}
 	
-	public void setMaxAnimalRegions(int ammount)
-	{
-		this.maxAnimalRegions = ammount;
+	public int getMaxPopulation() {
+		return this.maxPopulation;
 	}
-
-	public int getMaxAnimalRegions()
-	{
-		return this.maxAnimalRegions;
-	}
-	
 }

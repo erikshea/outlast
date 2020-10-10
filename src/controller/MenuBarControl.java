@@ -24,9 +24,7 @@ public class MenuBarControl extends MenuBar {
 		// "Refresh Animals" menu item
 		this.refreshAnimals.setOnAction( e -> { 
             	// delete them all
-            	me.mainController.getAnimalsRegion().getChildren().clear();
-            	// add new ones
-            	me.mainController.getAnimalsRegion().repopulateTo(8); // TODO: get rid of explicit number
+            	me.mainController.newGame();
         }); 
         
         this.exit.setOnAction( e -> { System.exit(0); }  );
@@ -50,11 +48,11 @@ public class MenuBarControl extends MenuBar {
 	}
 
 	/**
-	 * Sets mainRegion to a reference to the main window pane (to communicate with other controllers)
-	 * @param p main window pane
+	 * Sets a reference to the main controller (for console, and to communicate with other controllers)
+	 * @param c main window controller
 	 */
-	public void setMainController(MainWindowControl m)
+	void setMainController(MainWindowControl c)
 	{
-		this.mainController = m;
+		this.mainController = c;
 	}
 }

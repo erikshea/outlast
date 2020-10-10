@@ -21,10 +21,7 @@
 			<children>
 				<Label fx:id="animalNameInfo" />
 				<Label fx:id="animalTypeInfo" />
-				
-						
-	
-						
+
 				<HBox styleClass="animal-age-region" alignment="TOP_RIGHT">
 					<children>
 						<Label fx:id="animalSize" />
@@ -33,9 +30,6 @@
 						<Label text="years" />
 					</children>
 				</HBox>
-				
-				
-				
 			</children>
 		</VBox>
 		<VBox styleClass="right-region">
@@ -44,36 +38,43 @@
 					<children>
 						<ImageView styleClass="color">
 							<ActionTooltip.tooltip> 			<!--use ActionTooltip to set text within .fxml -->
-								<Tooltip text="Dye hair" />
+								<Tooltip text="Dye hair." />
 							</ActionTooltip.tooltip>
 						</ImageView>
+						
 						<ImageView styleClass="eat">
 							<ActionTooltip.tooltip>
-								<Tooltip text="Eat" />
+								<Tooltip text="Eat." />
 							</ActionTooltip.tooltip>
 						</ImageView>
+						
 						<ImageView styleClass="sleep">
 							<ActionTooltip.tooltip>
-								<Tooltip text="Sleep" />
+								<Tooltip text="Sleep." />
 							</ActionTooltip.tooltip>
 						</ImageView>
+						
 						<ImageView styleClass="smoke">
 							<ActionTooltip.tooltip>
-								<Tooltip text="Smoke" />
+								<Tooltip text="Smoke." />
 							</ActionTooltip.tooltip>
 						</ImageView>
+						
 						<ImageView styleClass="mask">
 							<ActionTooltip.tooltip>
-								<Tooltip text="Toggle mask" />
+								<Tooltip text="Toggle mask." />
 							</ActionTooltip.tooltip>
 						</ImageView>
+						
 						<StackPane alignment="TOP_RIGHT">
-							<ProgressIndicator fx:id="excrementIndicator"/>
-							<ImageView styleClass="bathroom">
-								<ActionTooltip.tooltip>
-									<Tooltip text="Perform exercise" />
-								</ActionTooltip.tooltip>
-							</ImageView>
+							<children>
+								<ProgressIndicator fx:id="excrementIndicator"/>
+								<ImageView styleClass="bathroom">
+									<ActionTooltip.tooltip>
+										<Tooltip text="Bathroom break." />
+									</ActionTooltip.tooltip>
+								</ImageView>
+							</children>
 						</StackPane>
 						
 						<ImageView styleClass="exercise">
@@ -81,15 +82,18 @@
 								<Tooltip text="Perform exercise" />
 							</ActionTooltip.tooltip>
 						</ImageView>
-						<ImageView styleClass="see_friend">
+						
+					    <ImageView styleClass="seeFriend, socialAction">
 							<ActionTooltip.tooltip>
-								<Tooltip text="See a friend" />
+								<Tooltip text="Reproduce." />
 							</ActionTooltip.tooltip>
 						</ImageView>
-						<ImageView styleClass="reproduce">
+						
+					    <ImageView styleClass="reproduce, socialAction">
 							<ActionTooltip.tooltip>
-								<Tooltip text="Reproduce" />
+								<Tooltip text="Reproduce." />
 							</ActionTooltip.tooltip>
+
 						</ImageView>
 					</children>
 				</HBox>

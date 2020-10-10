@@ -7,11 +7,13 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Side;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.HashMap;
 
 /**
  * 
@@ -31,10 +34,12 @@ import java.util.Set;
  */
 public class AnimalControl<T extends Animal> extends HBox {
 	private T animal;	// Animal subclass: Cat, Dog, etc...
-	
-    @FXML private Label animalNameInfo,animalTypeInfo,animalAge,animalSize;	// Animal info labels in .fxml
+
+	@FXML private Label animalNameInfo,animalTypeInfo,animalAge,animalSize;	// Animal info labels in .fxml
     @FXML private ProgressBar healthBar, energyBar;	// stat bars in .fxml
     @FXML private ProgressIndicator ageIndicator, excrementIndicator;
+    
+ //  @FXML ComboBox seeFriendMenu;
     
     @FXML private ImageView animalPortrait;	// Animal portrait in .fxml
     
@@ -42,17 +47,16 @@ public class AnimalControl<T extends Animal> extends HBox {
     
     SimpleStringProperty ageNumberUpdater, sizeNumberUpdater;
     SimpleDoubleProperty ageIndicatorUpdater,healthIndicatorUpdater,energyIndicatorUpdater,excrementIndicatorUpdater;
+
+    HashMap<String,ContextMenu> socialActionMenus = new HashMap<>(); 	// TODO: move to fxml
     
     /**
      * Set up view elements
      */
     @FXML private void initialize() {
-    	
-        this.animal.setName(this.getRandomName());	// Set random name
-       
     	this.setUpUpdaters();
     	
-    	this.animal.setEnergy(this.animal.getMaxEnergy()/2);
+    	this.animal.setEnergy(this.animal.getMaxEnergy()/2);	// Energy at 50%
         this.animal.setHealth((2*Math.random()+3)/5 *this.animal.getMaxHealth()); // random health between 60% and 100%
     	this.refreshStats(0);	// reset stats by refreshing with no duration change
 
@@ -68,7 +72,8 @@ public class AnimalControl<T extends Animal> extends HBox {
 
     	// Randomize initial portrait color
     	this.changePortraitColor(2*Math.random()-1);
-
+    	
+    	this.setUpSocialActionMenus();
     	this.setUpActionButtons();
     }
 
@@ -92,31 +97,6 @@ public class AnimalControl<T extends Animal> extends HBox {
     }
     
     /**
-     * Reads a file consisting of a list of names, returns a random one
-     */
-    private String getRandomName()
-    {
-    	List<String> names = new ArrayList<String>();
-    	
-    	 try {
-    	      File animalNamesFile = new File("@../../resources/data/animal_names.txt");
-    	      Scanner nameReader = new Scanner(animalNamesFile);
-    	      while (nameReader.hasNextLine()) {
-    	        String name = nameReader.nextLine();
-    	        names.add(name);
-    	      }
-    	      nameReader.close();
-    	    } catch (FileNotFoundException e) {
-    	      System.out.println("Read error.");
-    	      e.printStackTrace();
-    	    }
-    	
-    	int nameIndex = (int) (names.size() * Math.random());
-    	
-    	return names.get(nameIndex);
-    }
-    
-    /**
      * Changes animal portrait color to a different hue
      * @param value hue between -1 and 1
      */
@@ -131,11 +111,11 @@ public class AnimalControl<T extends Animal> extends HBox {
     
     /**
      * Sets up action logic
-     * @param action action name
+     * @param actionName action name
      */
-    public void executeAction(String action)
+    public void executeAction(String actionName, Node originator)
     {
-    	switch (action)
+    	switch (actionName)
     	{
 	    	case "color":
 	    		this.changePortraitColor(2*Math.random()-1);
@@ -161,10 +141,16 @@ public class AnimalControl<T extends Animal> extends HBox {
 				break;
 				
 			case "bathroom":
-				this.animal.changeExcrementPercentageBy(-5);
+				this.animal.setExcrementPercentage(0);
 				break;
-				
-				
+			
+			case "seeFriend":
+				this.showSeeFriendMenu(originator);
+				break;
+
+			case "reproduce":
+				this.showReproduceMenu(originator);
+				break;
     	}
     }
     
@@ -176,29 +162,32 @@ public class AnimalControl<T extends Animal> extends HBox {
      */
     private void setUpActionButtons()
     {
-    	// css fetch all action ImageViews
+    	// css fetch all action ImageViews, including nested
     	Set<Node> actionImageViewNodes = this.lookupAll(".animal-action-bar ImageView");
-
+    	;
+    	
+    	
     	for (Node actionImageViewNode:actionImageViewNodes )
     	{
     		ImageView actionImageView = (ImageView) actionImageViewNode;	// Cast node to ImageView 
+    		String actionName = actionImageView.getStyleClass().get(1);		// action name (class) defined in .fxml 
     		
-    		// image path depends on animal type, and action style class defined in .fxml
+    		// set image path 
     		Image actionIcon = new Image("file:@../../resources/images/actions/" + animal.getType() + "/" + actionImageView.getStyleClass().get(1) + ".png");
     		actionImageView.setPickOnBounds(true);	// entire image bounding box should be clickable, not just visible parts
     		actionImageView.setImage(actionIcon);		
     		
-    		actionImageView.setOnMouseEntered( e-> { actionImageView.setOpacity(0.3); }); // lambda event restores opacity on hover in
+    		actionImageView.setOnMouseEntered( e-> { actionImageView.setOpacity(0.3); }); // reduces opacity on hover in
     		
-    		actionImageView.setOnMouseExited( e-> { actionImageView.setOpacity(1); }); // lambda event restores opacity on hover out
+    		actionImageView.setOnMouseExited( e-> { actionImageView.setOpacity(1); }); // restores opacity on hover out
     		
     		
-    		actionImageView.setOnMousePressed( e-> {							// lambda event handles click on action icons
-    		    	String action = actionImageView.getStyleClass().get(1);	// action name (class) defined in .fxml 
-    		    	this.executeAction(action);
+    		actionImageView.setOnMousePressed( e-> {							// on action icon click
+    		    	String action = actionName;
+    		    	this.executeAction(action, actionImageView);
     		}
     		);
-    		
+
     	}
     }
     
@@ -212,8 +201,8 @@ public class AnimalControl<T extends Animal> extends HBox {
 	{
 		this.animal.changeAgeBy(duration);
 		
-		String ageString = (String.valueOf((int) (Math.floor(this.animal.getAge()))));
-		this.ageNumberUpdater.setValue(ageString);
+		int age = (int) (Math.floor(this.animal.getAge()));
+		this.ageNumberUpdater.setValue(String.valueOf(age));
 		this.ageIndicatorUpdater.setValue( 1 - this.animal.getAge()/this.animal.getLifeExpectancy());
 		this.excrementIndicatorUpdater.setValue( this.animal.getExcrementPercentage()/100);
 
@@ -247,12 +236,107 @@ public class AnimalControl<T extends Animal> extends HBox {
     	this.animalSize.textProperty().bind( sizeNumberUpdater );
 	}
 	
-	public void setMainController(MainWindowControl mc) {
-		this.mainController = mc;
+	/**
+	 * Sets a reference to the main controller (for console, and to communicate with other controllers)
+	 * @param c main window controller
+	 */
+	void setMainController(MainWindowControl c)
+	{
+		this.mainController = c;
 	}
 	
-	public MainWindowControl getMainController() {
-		return this.mainController;
+	void setUpSocialActionMenus()
+	{
+		Set<Node> socialActionImageViewNodes = this.lookupAll(".animal-action-bar .socialAction");
+
+		for( Node actionImageView : socialActionImageViewNodes )
+		{
+			ContextMenu actionMenu = new ContextMenu();
+			
+			// add to hashmap with action name as key.
+			this.socialActionMenus.put(actionImageView.getStyleClass().get(1), actionMenu );
+		}
+	}
+	
+	
+	protected void showSeeFriendMenu(Node originator)
+	{
+		List<AnimalControl<Animal>> animalRegions = this.mainController.getAnimalsRegion().getAnimalRegions();
+		
+		ContextMenu currentContextMenu = this.socialActionMenus.get("seeFriend");	// TODO : do without explicit action name
+		currentContextMenu.getItems().clear();	// Clear existing menu
+		
+		for (AnimalControl<Animal> animalRegion : animalRegions)	// Loop trough animals to find potential friends
+		{
+			if (animalRegion.getAnimal().getType() != this.animal.getNaturalEnemyType()) {	// No menu item for natural enemies
+				MenuItem animalMenuItem = this.getMenuItemForAnimal(animalRegion); 	// redeclare at each loop for event's local method
+				
+				animalMenuItem.setOnAction( e-> {
+					this.animal.changeEnergyBy(5);					//	Both get an energy boost.
+					animalRegion.getAnimal().changeEnergyBy(5);		//
+			    });
+				
+				currentContextMenu.getItems().add(animalMenuItem);
+			}
+				
+		}
+		
+		currentContextMenu.show(originator, Side.BOTTOM, 0, 0);
+	}
+	
+	protected void showReproduceMenu(Node originator)
+	{
+		ContextMenu currentContextMenu = this.socialActionMenus.get("reproduce");	// TODO : do without explicit action name
+		currentContextMenu.getItems().clear();	// Clear existing menu
+		
+		
+		// fetch all animals of same type as
+		Set<Node> potentialMates = this.mainController.getAnimalsRegion().lookupAll("." + this.getAnimal().getType());
+		
+		for ( Node n : potentialMates )	// Loop through potential mates
+		{
+			@SuppressWarnings("unchecked")
+			AnimalControl<Animal> potentialMate = (AnimalControl<Animal>) n;	// cast to access animal subclass
+
+			if (!this.equals(potentialMate)) {	// can't reproduce with self!
+				MenuItem animalMenuItem = this.getMenuItemForAnimal(potentialMate); 	// redeclare at each loop for event's local method
+				
+
+				animalMenuItem.setOnAction( e-> {
+					if (this.mainController.getAnimalsRegion().getChildren().size() == this.mainController.getAnimalsRegion().getMaxPopulation()) {
+
+						// Can't reproduce if population at max. TODO: grey out button with signal
+						this.mainController.getConsole().printLine("No free population slot.");
+					} else
+					{
+						// all in one call, to not have to cast the baby to current animal subclass
+						this.mainController.getAnimalsRegion().addAnimalControl(this.animal.reproduceWith(potentialMate.getAnimal()));
+					}
+			    });
+				
+				currentContextMenu.getItems().add(animalMenuItem);	// Add to potential mates menu
+			}
+			
+		}
+		
+		
+		currentContextMenu.show(originator, Side.BOTTOM, 0, 0);
+	}
+	
+	protected MenuItem getMenuItemForAnimal(AnimalControl<Animal> ac)
+	{
+		MenuItem animalMenuItem = new MenuItem(ac.getAnimal().getName());
+		
+		if (ac.getAnimal().getType() == "monkey")
+		{
+			animalMenuItem.setStyle("-fx-font-weight: bold; -fx-text-fill: #0067a8");	// TODO: get rid of stupid hack 
+		} else
+		{
+			animalMenuItem.setStyle("-fx-font-weight: bold; -fx-text-fill: #"	// TODO: general style properties to css
+									+ ac.animalNameInfo.getTextFill().toString().substring(2,8));	// use same text color as name
+		}
+
+		return animalMenuItem;
 	}
 	
 }

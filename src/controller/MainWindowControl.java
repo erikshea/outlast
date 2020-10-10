@@ -19,15 +19,27 @@ public class MainWindowControl extends BorderPane{
 	@FXML private MenuBarControl mainMenuBar;
 	@FXML private MiniConsole console;
 	
-	Timeline mainTimeline;
+	private double currentGameYearsElapsed;
 	
+	Timeline gameTimeline;
+	double gameTimeElapsed;
 	
 	public void initialize() {
-		this.mainMenuBar.setMainController(this);	// TODO: decouple controllers with mediator pattern
-		this.animalsRegion.setMainController(this);	//
-		this.animalsRegion.repopulateTo(8);	// TODO: move to AnimalsControl when controller mediator done
+		this.createTimeline(0.1); // will refresh every 0.1s
 		
-		this.createTimeline();
+		this.mainMenuBar.setMainController(this);	// TODO: decouple controllers with mediator
+		this.animalsRegion.setMainController(this);	//
+		
+		this.newGame();
+	}
+
+	public void newGame() {
+		this.gameTimeline.stop();					// Stop time line, in case it was already started
+		this.currentGameYearsElapsed = 0;
+		this.console.clear(); 						// Clear console
+		this.animalsRegion.getChildren().clear();	// Clear animals
+		this.animalsRegion.spawnRandomAnimals(8);	// Create 8 new animals
+		this.gameTimeline.play();					// Restart time line					
 	}
 	
 	public MainWindowControl(){
@@ -40,39 +52,38 @@ public class MainWindowControl extends BorderPane{
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
-        
-
-
 	}
 	
-	
-	public AnimalsControl getAnimalsRegion()
-	{
-		return this.animalsRegion;
-	}
-	
-	
-	public void createTimeline() {
-		double refreshInterval = 0.1;
-		
-		this.mainTimeline = new Timeline(
-			    new KeyFrame(Duration.seconds(refreshInterval), e -> {	// lambda handler allows access to "this"
-			    	this.getAnimalsRegion().increaseAges(refreshInterval);
+	public void createTimeline(double refreshInterval) {
+		this.gameTimeline = new Timeline(
+			    new KeyFrame(Duration.seconds(refreshInterval), e -> {
+			    	double gameYearsInterval = refreshInterval/5; // 5 seconds real time = 1 year in-game
+			    	this.getAnimalsRegion().increaseAges(gameYearsInterval);	
+			    	this.currentGameYearsElapsed += gameYearsInterval;
+			    	
+			    	// Remove dead animals here for thread concurrency
+			    	this.getAnimalsRegion().clearDeadAnimals();	// TODO : handle dead animals with signal in AnimalRegion
 					
-			    	// Need to remove all separately for thread concurrency
-			    	this.getAnimalsRegion().clearDeadAnimals();
-					
-					// replace dead animals
-			    	this.getAnimalsRegion().repopulateTo(this.getAnimalsRegion().getMaxAnimalRegions());
+			    	if (this.getAnimalsRegion().getChildren().size() == 0)	// If no more animals
+			    	{
+			    		this.getConsole().printLine( "Game over. Your population has survived " + (int)this.currentGameYearsElapsed + " years." );
+			    		this.gameTimeline.stop();
+			    	}
+			    	
 			    })
 			);
-		this.mainTimeline.setCycleCount(Animation.INDEFINITE);
-		this.mainTimeline.play();
+		
+		this.gameTimeline.setCycleCount(Animation.INDEFINITE);	// repeats until stopped
 	}
 	
 	public MiniConsole getConsole()
 	{
 		return this.console;
 	}
+
 	
+	public AnimalsControl getAnimalsRegion()
+	{
+		return this.animalsRegion;
+	}
 }

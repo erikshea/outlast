@@ -1,9 +1,16 @@
 package animals;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Animal {
 	protected String name;
 	protected String color;
 	protected String type;
+	protected String naturalEnemyType;
 	protected double age;
 	protected int lifeExpectancy;
 	protected double health;			// Current health
@@ -35,6 +42,7 @@ public class Animal {
 		this.foodPercentage = 100;
 		this.excrementPercentage = 0;
 		this.hasMask = false;
+		this.setRandomName();
 	}
 
 	/**
@@ -75,14 +83,6 @@ public class Animal {
 		this.setHealth(0);
 	}
 
-
-	/**
-	 * smoke action: health increases, appetite decreases
-	 */
-	public void doActionSmoke() {
-		this.setHealth(this.health - 1);	
-		this.setFoodPercentage(this.foodPercentage + 1);
-	}
 	
 	/**
 	 * mask action: Removes mask if on, and vise versa
@@ -91,43 +91,23 @@ public class Animal {
 		this.hasMask = !this.hasMask;
 	}
 
-	
-	/**
-	 * eat action: add to food
-	 * @param quantity quantity
-	 */
-	public void doActionEat(double quantity) {
-		this.foodPercentage += quantity;
-	}
-
-
-	/**
-	 * bathroom action: empty bowels
-	 */
-	public void doActionBathroom() {
-		this.setExcrementPercentage(0);
-	}
-	
-	/**
-	 * sport action: increase health
-	 */
-	public void doActionPlaySports() {
-		this.changeHealthBy(1);
-	}
-
 	/**
 	 * Create a new Cat inheriting traits from both the caller, and a partner
 	 * @param partner
 	 * @return
 	 */
-	public Animal doActionReproduce(Animal partner) {
-		Animal newCat = new Animal();
+	public Animal reproduceWith(Animal partner) {
+		try {
+			Animal baby = this.getClass().getConstructor().newInstance(); // need to create instance with class constructor, so subclasses don't generate generic animal
+			baby.reset();
+			
+			return this.getClass().cast(baby); // cast baby to subclass
+		} catch (Exception E)
+		{
+			return null;
+		}
 
-		newCat.reset();
-
-		newCat.setColor( this.getRandomParent(partner).getColor() ); //todo: mix color
-
-		return newCat;
+		//baby.setColor( this.getRandomParent(partner).getColor() ); //todo: mix color
 	}
 
 
@@ -150,18 +130,11 @@ public class Animal {
 		return returnedParent;
 	}
 	
-	/*
-	 * Change hunger by ammount (negative or positive)
-	 */
-	protected void changeHungerBy(int ammount)
-	{
-		this.setFoodPercentage(this.foodPercentage + ammount);
-	}
 	
 	/*
 	 * Change health by ammount (negative or positive)
 	 */
-	public void changeHealthBy(int ammount)
+	public void changeHealthBy(double ammount)
 	{
 		this.setHealth(this.getHealth() + ammount);
 	}
@@ -266,7 +239,9 @@ public class Animal {
 	 * @param newAge
 	 */
 	protected void setAge(double newAge) {
-		this.changeExcrementPercentageBy((newAge - this.age)*15);
+		double timeElapsed = newAge - this.age;
+		
+		this.changeExcrementPercentageBy((timeElapsed)*15);
 		
 		double oldMaxHealth = this.getMaxHealth();
 		double oldMaxEnergy = this.getMaxEnergy();
@@ -278,6 +253,11 @@ public class Animal {
 		
 		// current energy changes by a factor of newMaxHealth/oldMaxHealth
 		this.setEnergy(this.getMaxEnergy()/oldMaxEnergy * this.getEnergy());
+		
+		if (this.excrementPercentage == 100)
+		{
+			this.changeHealthBy(timeElapsed);
+		}
 		
 
 		if (this.lifeExpectancy < this.age)
@@ -303,14 +283,6 @@ public class Animal {
 
 	public void setColor(String c) {
 		this.color = c;
-	}
-
-	public double getFoodPercentage() {
-		return this.foodPercentage;
-	}
-
-	public void setFoodPercentage(double h) {
-		this.foodPercentage = h;
 	}
 
 	public double getHealth() {
@@ -343,6 +315,10 @@ public class Animal {
 		return this.excrementPercentage;
 	}
 	
+	public String getNaturalEnemyType() {
+		return this.naturalEnemyType;
+	}
+	
 	/**
 	 * Sets current excrement level as a percentage. Negative values are reset to 0.
 	 * @param p 
@@ -353,14 +329,37 @@ public class Animal {
 			p = 0;
 		}
 		
-		if (p>=100)
-		{
-			this.setHealth(0);
-		}
 		this.excrementPercentage = p;
 	}
 	
 	public void changeExcrementPercentageBy(double p) {
 		this.setExcrementPercentage(this.excrementPercentage + p);
 	}
+	
+	
+    
+    /**
+     * Reads a file consisting of a list of names, sets name a random one
+     */
+    private void setRandomName()
+    {
+    	List<String> names = new ArrayList<String>();
+    	
+    	 try {
+    	      File animalNamesFile = new File("@../../resources/data/animal_names.txt");
+    	      Scanner nameReader = new Scanner(animalNamesFile);
+    	      while (nameReader.hasNextLine()) {
+    	        String name = nameReader.nextLine();
+    	        names.add(name);
+    	      }
+    	      nameReader.close();
+    	    } catch (FileNotFoundException e) {
+    	      System.out.println("Read error.");
+    	      e.printStackTrace();
+    	    }
+    	
+    	int nameIndex = (int) (names.size() * Math.random());
+    	
+    	this.name = names.get(nameIndex);
+    }
 }
