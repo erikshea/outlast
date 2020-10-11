@@ -57,7 +57,7 @@ public class MainWindowControl extends BorderPane{
 	public void createTimeline(double refreshInterval) {
 		this.gameTimeline = new Timeline(
 			    new KeyFrame(Duration.seconds(refreshInterval), e -> {
-			    	double gameYearsInterval = refreshInterval/5; // 5 seconds real time = 1 year in-game
+			    	double gameYearsInterval = refreshInterval/4; // 2 seconds real time = 1 year in-game
 			    	this.getAnimalsRegion().increaseAges(gameYearsInterval);	
 			    	this.currentGameYearsElapsed += gameYearsInterval;
 			    	
@@ -69,7 +69,6 @@ public class MainWindowControl extends BorderPane{
 			    		this.getConsole().printLine( "Game over. Your population has survived " + (int)this.currentGameYearsElapsed + " years." );
 			    		this.gameTimeline.stop();
 			    	}
-			    	
 			    })
 			);
 		

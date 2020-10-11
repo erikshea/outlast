@@ -8,14 +8,31 @@
 
 .animal-region{
 	-fx-background-color: #ffffff;
+	
+}
+
+#animalProfile{
+	-fx-alignment: bottom-left;
+	
+	-fx-pref-width: 124px;
+}
+
+#animalPortrait{
 }
 
 .animal-info{
 	-fx-background-position: right top;
 	-fx-background-repeat: no-repeat;
 	-fx-background-color: #ffffff;
-    -fx-pref-width: 180px;
     -fx-padding: 0 40 0 0;	
+	-fx-alignment: baseline-right;
+	-fx-pref-width: 180px;
+}
+
+
+
+.animal-age-region{
+	-fx-alignment: top-right;
 }
 
 #animalNameInfo{
@@ -87,21 +104,21 @@
 	-fx-padding: 0 20 0 5;
 }
 
-.monkey .right-region{
-	-fx-background-image: url("../../resources/images/backgrounds/repeat/monkey.png");
-}
 
 .animal-action-bar{
-	-fx-padding: 10 20 0 0;	
-	-fx-spacing: 10;
-}
-.animal-action-bar ImageView {
-	-fx-background-color: red;
-	-fx-padding: 15 0 0 0;	
+	-fx-padding: 10 10 0 0;	
+	-fx-spacing: 8;
 }
 
-.animal-action-bar StackPane {
+.animal-action-bar Button{
 	-fx-pref-height: 40px;
+	-fx-min-width: 40px;
+	-fx-background-color: transparent;
+}
+
+
+.animal-action-bar StackPane {
+	-fx-alignment: top-right;
 }
 
 ProgressBar {
@@ -154,13 +171,3 @@ ProgressBar {
 #excrementIndicator .percentage {
     -fx-fill:null;
 }
-
-
-#seeFriend{
-	-fx-background-image: url("../../resources/images/actions/cat/see_friend.png");
-	-fx-pref-height: 40px;
-	-fx-max-width: 40px;
-    -fx-background-color: transparent;
-    -fx-cell-size:30px;
-}
-

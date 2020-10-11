@@ -4,28 +4,29 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.control.Label?>
-<?import fxml.ActionTooltip?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Slider?>
 
 <fx:root type="javafx.scene.layout.HBox"
 	xmlns:fx="http://javafx.com/fxml" styleClass="animal-region"
 	stylesheets="@animalControl.css">
 	<children>
-
-		<ImageView fx:id="animalPortrait" fitHeight="100"
-			pickOnBounds="true" preserveRatio="true" />
-
-		<VBox styleClass="animal-info" alignment="BASELINE_RIGHT">
+		<HBox fx:id="animalProfile">
+			<ImageView fx:id="animalPortrait"/>
+		</HBox>
+		<VBox styleClass="animal-info">
 			<children>
 				<Label fx:id="animalNameInfo" />
 				<Label fx:id="animalTypeInfo" />
 
-				<HBox styleClass="animal-age-region" alignment="TOP_RIGHT">
+				<HBox styleClass="animal-age-region">
 					<children>
 						<Label fx:id="animalSize" />
-						<ProgressIndicator fx:id="ageIndicator"/>
+						<ProgressIndicator fx:id="ageIndicator" />
 						<Label fx:id="animalAge" />
 						<Label text="years" />
 					</children>
@@ -36,65 +37,72 @@
 			<children>
 				<HBox styleClass="animal-action-bar">
 					<children>
-						<ImageView styleClass="color">
-							<ActionTooltip.tooltip> 			<!--use ActionTooltip to set text within .fxml -->
+						<Button styleClass="color">
+							<tooltip>
 								<Tooltip text="Dye hair." />
-							</ActionTooltip.tooltip>
-						</ImageView>
-						
-						<ImageView styleClass="eat">
-							<ActionTooltip.tooltip>
+							</tooltip>
+							<Slider fx:id="colorSlider"/>
+						</Button>
+
+						<Button styleClass="eat">
+							<tooltip>
 								<Tooltip text="Eat." />
-							</ActionTooltip.tooltip>
-						</ImageView>
-						
-						<ImageView styleClass="sleep">
-							<ActionTooltip.tooltip>
+							</tooltip>
+						</Button>
+
+						<Button styleClass="sleep">
+							<tooltip>
 								<Tooltip text="Sleep." />
-							</ActionTooltip.tooltip>
-						</ImageView>
-						
-						<ImageView styleClass="smoke">
-							<ActionTooltip.tooltip>
+							</tooltip>
+						</Button>
+
+						<Button styleClass="smoke">
+							<tooltip>
 								<Tooltip text="Smoke." />
-							</ActionTooltip.tooltip>
-						</ImageView>
-						
-						<ImageView styleClass="mask">
-							<ActionTooltip.tooltip>
+							</tooltip>
+						</Button>
+
+						<Button styleClass="mask">
+							<tooltip>
 								<Tooltip text="Toggle mask." />
-							</ActionTooltip.tooltip>
-						</ImageView>
-						
-						<StackPane alignment="TOP_RIGHT">
+							</tooltip>
+						</Button>
+
+						<Button styleClass="exercise">
+							<tooltip>
+								<Tooltip text="Perform exercise." />
+							</tooltip>
+						</Button>
+
+						<StackPane>
 							<children>
-								<ProgressIndicator fx:id="excrementIndicator"/>
-								<ImageView styleClass="bathroom">
-									<ActionTooltip.tooltip>
-										<Tooltip text="Bathroom break." />
-									</ActionTooltip.tooltip>
-								</ImageView>
+								<ProgressIndicator fx:id="excrementIndicator" />
+								<Button styleClass="bathroom">
+									<tooltip>
+										<Tooltip text="Use the bathroom." />
+									</tooltip>
+								</Button>
 							</children>
 						</StackPane>
-						
-						<ImageView styleClass="exercise">
-							<ActionTooltip.tooltip>
-								<Tooltip text="Perform exercise" />
-							</ActionTooltip.tooltip>
-						</ImageView>
-						
-					    <ImageView styleClass="seeFriend, socialAction">
-							<ActionTooltip.tooltip>
-								<Tooltip text="Reproduce." />
-							</ActionTooltip.tooltip>
-						</ImageView>
-						
-					    <ImageView styleClass="reproduce, socialAction">
-							<ActionTooltip.tooltip>
-								<Tooltip text="Reproduce." />
-							</ActionTooltip.tooltip>
 
-						</ImageView>
+						<Button styleClass="seeFriend,">
+							<tooltip>
+								<Tooltip text="See friend." />
+							</tooltip>
+							<contextMenu>
+								<ContextMenu fx:id="reproduceMenu" />
+							</contextMenu>
+						</Button>
+
+						<Button styleClass="reproduce,">
+							<tooltip>
+								<Tooltip text="Reproduce." />
+							</tooltip>
+							<contextMenu>
+								<ContextMenu fx:id="seeFriendMenu" />
+							</contextMenu>
+						</Button>
+
 					</children>
 				</HBox>
 				<ProgressBar fx:id="healthBar" />

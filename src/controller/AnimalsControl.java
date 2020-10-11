@@ -97,26 +97,26 @@ public class AnimalsControl extends VBox{
 		this.mainController = c;
 	}
 	
-	void increaseAges(double years)
+	public<T extends Animal> void increaseAges(double years)
 	{
 		ObservableList<Node> nodes = this.getChildren();
 		
 		for (Node n:nodes)
 		{
 			@SuppressWarnings("unchecked")
-			AnimalControl<Animal> animalRegion = (AnimalControl<Animal>) n;
+			AnimalControl<T> animalRegion = (AnimalControl<T>) n;
 			
-			animalRegion.refreshStats(years);
+			animalRegion.refreshGui(years);
 		}
 	}
 	
-	void clearDeadAnimals()
+	public<T extends Animal> void clearDeadAnimals()
 	{
-		List<AnimalControl<Animal>> animalRegions = getAnimalRegions();
-		List<AnimalControl<Animal>> deadAnimalRegions = new ArrayList<>();
+		List<AnimalControl<T>> animalRegions = this.getAnimalRegions();
+		List<AnimalControl<T>> deadAnimalRegions = new ArrayList<>();
 		
 		
-		for (AnimalControl<Animal> a:animalRegions)
+		for (AnimalControl<T> a:animalRegions)
 		{
 			if(!a.getAnimal().isAlive()) {
 				deadAnimalRegions.add(a);
@@ -129,15 +129,15 @@ public class AnimalsControl extends VBox{
 
 	
 	
-	List<AnimalControl<Animal>> getAnimalRegions()
+	public<T extends Animal> List<AnimalControl<T>> getAnimalRegions()
 	{
-		List<AnimalControl<Animal>> animalRegions = new ArrayList<>();
+		List<AnimalControl<T>> animalRegions = new ArrayList<>();
 		ObservableList<Node> nodes = this.getChildren();
 
 		for (int i=0;i<nodes.size();i++) {
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings("unchecked")	// Only AnimalControl nodes in children
 			// Have to redeclare temp at every iteration to suppress warnings
-			AnimalControl<Animal> temp = (AnimalControl<Animal>) nodes.get(i);	
+			AnimalControl<T> temp = (AnimalControl<T>) nodes.get(i);	
 			animalRegions.add(temp );
 		}
 		

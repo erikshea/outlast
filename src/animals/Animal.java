@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class Animal {
 	protected String name;
-	protected String color;
+	protected double color;
 	protected String type;
 	protected String naturalEnemyType;
 	protected double age;
@@ -43,6 +43,9 @@ public class Animal {
 		this.excrementPercentage = 0;
 		this.hasMask = false;
 		this.setRandomName();
+		this.setColor(2*Math.random()-1);
+    	this.setEnergy(this.getMaxEnergy()/2);	// energy at 50%
+        this.setHealth((2*Math.random()+4)/5 *this.getMaxHealth()); // random health between 80% and 100%
 	}
 
 	/**
@@ -96,39 +99,30 @@ public class Animal {
 	 * @param partner
 	 * @return
 	 */
-	public Animal reproduceWith(Animal partner) {
+	public<T extends Animal> T reproduceWith(T partner) {
 		try {
-			Animal baby = this.getClass().getConstructor().newInstance(); // need to create instance with class constructor, so subclasses don't generate generic animal
-			baby.reset();
+			@SuppressWarnings("unchecked")
+		 	T baby = (T)this.getClass().getConstructor().newInstance(); // use constructor to always return animal of correct subclass
 			
-			return this.getClass().cast(baby); // cast baby to subclass
+			baby.combineTraits(this, partner);
+			
+			return baby; // use constructor to always return animal of correct subclass
 		} catch (Exception E)
 		{
 			return null;
 		}
-
-		//baby.setColor( this.getRandomParent(partner).getColor() ); //todo: mix color
 	}
-
-
+	
 	/**
-	 * For reproduction purposes, return a random parent
-	 * @param partner another cat with which to reproduce
-	 * @return either the caller cat, or its partner
+	 * For reproduction purposes, mix traits from 2 animals
+	 * @param parent1 a parent
+	 * @param parent2 the other parent
 	 */
-	protected Animal getRandomParent(Animal partner) {
-		
-		Animal returnedParent = new Animal();
-		
-		if ((int) (2 * Math.random()) == 0) {
-			returnedParent = this;
-		} else
-		{
-			returnedParent = partner;
-		}
-		
-		return returnedParent;
+	public<T extends Animal>  void combineTraits(T parent1, T parent2)
+	{
+		this.color = (parent1.getColor() + parent2.getColor())/2;
 	}
+	
 	
 	
 	/*
@@ -164,7 +158,7 @@ public class Animal {
 	 */
 	public int getMatureAge()
 	{
-		return (this.lifeExpectancy / 3);
+		return (this.lifeExpectancy / 5);
 	}
 	
 	
@@ -180,6 +174,7 @@ public class Animal {
 		{
 			growthRatio = 1;
 		}
+		
 		return growthRatio;
 	}
 	
@@ -254,9 +249,10 @@ public class Animal {
 		// current energy changes by a factor of newMaxHealth/oldMaxHealth
 		this.setEnergy(this.getMaxEnergy()/oldMaxEnergy * this.getEnergy());
 		
-		if (this.excrementPercentage == 100)
+		
+		if (this.excrementPercentage >= 100)
 		{
-			this.changeHealthBy(timeElapsed);
+			this.changeHealthBy(-timeElapsed*20);
 		}
 		
 
@@ -277,11 +273,11 @@ public class Animal {
 
 
 	
-	public String getColor() {
+	public double getColor() {
 		return this.color;
 	}
 
-	public void setColor(String c) {
+	public void setColor(double c) {
 		this.color = c;
 	}
 
@@ -324,7 +320,6 @@ public class Animal {
 	 * @param p 
 	 */
 	public void setExcrementPercentage(double p) {
-
 		if (p < 0) {
 			p = 0;
 		}
