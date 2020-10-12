@@ -1,7 +1,14 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +19,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Pair;
 
 public class MiniConsole extends AnchorPane {
 	@FXML VBox consolePane;
@@ -69,4 +77,27 @@ public class MiniConsole extends AnchorPane {
     	}
     }
 	
+    public static void parseSpans(String text) {
+        String spanPattern = "([^<]*)(?:<span class='([^']+)'>([^<]+)<\\/span>(.*))?";
+        
+    	Pattern p = Pattern.compile(spanPattern);
+    	Matcher m = p.matcher(text);
+    	
+    	List<Pair<String,String>> elements = new ArrayList<>();
+    	
+    	while (m.find()) {
+    		if (m.group(1).length()>0) {
+    			elements.add(new Pair<>("", m.group(1)));
+    		}
+    		if (m.group(2) != null) {
+        		if (m.group(3).length()>0)
+        		{
+        			elements.add(new Pair<>(m.group(2), m.group(3)));
+        		}
+        		m = p.matcher(m.group(4));
+    		}
+    	}
+    }
+    
+    
 }

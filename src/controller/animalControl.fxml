@@ -15,9 +15,12 @@
 	xmlns:fx="http://javafx.com/fxml" styleClass="animal-region"
 	stylesheets="@animalControl.css">
 	<children>
-		<HBox fx:id="animalProfile">
+		<HBox>
 			<Slider fx:id="colorSlider" min="-1" max="1" value="0" orientation="vertical"/>
-			<ImageView fx:id="animalPortrait"/>
+			<StackPane fx:id="animalProfile">
+				<ImageView fx:id="animalPortrait"/>
+				<ImageView fx:id="animalMask"/>
+			</StackPane>
 		</HBox>
 		<VBox styleClass="animal-info">
 			<children>

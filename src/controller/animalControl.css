@@ -68,35 +68,35 @@
 }
 
 .cat .animal-info{
-	-fx-background-image: url("../../resources/images/backgrounds/transition/cat.png");
+	-fx-background-image: url("../../resources/images/backgrounds/cat/transition.png");
 }
 
 .dog .animal-info{
-	-fx-background-image: url("../../resources/images/backgrounds/transition/dog.png");
+	-fx-background-image: url("../../resources/images/backgrounds/dog/transition.png");
 }
 
 .dragon .animal-info{
-	-fx-background-image: url("../../resources/images/backgrounds/transition/dragon.png");
+	-fx-background-image: url("../../resources/images/backgrounds/dragon/transition.png");
 }
 
 .monkey .animal-info{
-	-fx-background-image: url("../../resources/images/backgrounds/transition/monkey.png");
+	-fx-background-image: url("../../resources/images/backgrounds/monkey/transition.png");
 }
 
 .cat .right-region{
-	-fx-background-image: url("../../resources/images/backgrounds/repeat/cat.png");
+	-fx-background-image: url("../../resources/images/backgrounds/cat/repeat.png");
 }
 
 .dog .right-region{
-	-fx-background-image: url("../../resources/images/backgrounds/repeat/dog.png");
+	-fx-background-image: url("../../resources/images/backgrounds/dog/repeat.png");
 }
 
 .dragon .right-region{
-	-fx-background-image: url("../../resources/images/backgrounds/repeat/dragon.png");
+	-fx-background-image: url("../../resources/images/backgrounds/dragon/repeat.png");
 }
 
 .monkey .right-region{
-	-fx-background-image: url("../../resources/images/backgrounds/repeat/monkey.png");
+	-fx-background-image: url("../../resources/images/backgrounds/monkey/repeat.png");
 }
 
 .right-region{

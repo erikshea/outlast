@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -34,8 +35,9 @@ public class AnimalControl<T extends Animal> extends HBox {
 	@FXML private Label animalNameInfo,animalTypeInfo,animalAge,animalSize;	// Animal info labels 
     @FXML private ProgressBar healthBar, energyBar;	// stat bars
     @FXML private ProgressIndicator ageIndicator, excrementIndicator;
+    @FXML private StackPane animalProfile;
     
-    @FXML private ImageView animalPortrait;					// picture of animal
+    @FXML private ImageView animalPortrait, animalMask;					// picture of animal
     @FXML private ContextMenu reproduceMenu, seeFriendMenu;	// context menu for social actions
     @FXML private Slider colorSlider;						// slider for color adjustment
     
@@ -49,14 +51,18 @@ public class AnimalControl<T extends Animal> extends HBox {
     	this.getStyleClass().add(animal.getType());	// for css, make animal type the style class for the root nod
 
         // Name and type here because it won't change
-    	animalNameInfo.setText(animal.getName());
-    	animalTypeInfo.setText("the " + TextUtils.capitalize(animal.getType()));
+    	this.animalNameInfo.setText(animal.getName());
+    	this.animalTypeInfo.setText("the " + TextUtils.capitalize(animal.getType()));
     	
         Image portrait = new Image("file:@../../resources/images/species/" + animal.getType() + ".png");
-    	animalPortrait.setImage(portrait);
-    	animalPortrait.setPreserveRatio(true);	// preserve ratio when resizing
-    	animalPortrait.setFitHeight(1); // Start tiny so that the GUI doesn't show max size on initization.
+    	this.animalPortrait.setImage(portrait);
+    	this.animalPortrait.setPreserveRatio(true);	// preserve ratio when resizing
+    	this.animalPortrait.setFitHeight(1); // Start tiny so that the GUI doesn't show max size on initization.
     	
+    	Image mask = new Image("file:@../../resources/images/species/" + animal.getType() + "_mask.png");
+    	this.animalMask.setImage(mask);
+    	this.animalMask.setPreserveRatio(true);	// preserve ratio when resizing
+    	this.animalMask.setVisible(false);
     	
     	this.applyPortraitColor();
     	
@@ -121,8 +127,6 @@ public class AnimalControl<T extends Animal> extends HBox {
 				
 			case "mask":
 				this.animal.toggleMask();
-				this.animal.changeHealthBy(5);
-				this.animal.changeEnergyBy(-5);
 				break;
 				
 			case "exercise":
@@ -187,7 +191,9 @@ public class AnimalControl<T extends Animal> extends HBox {
 		this.animal.getSizeProperty().addListener((arg, oldSize, newSize) -> {
 			this.animalSize.setText(String.valueOf((int)(newSize.doubleValue()))  + " cm" );
 			
-			this.animalPortrait.setFitHeight(100*newSize.doubleValue()/this.animal.getMaxSize());
+			double portraitScale = 100*newSize.doubleValue()/this.animal.getMaxSize();
+			this.animalPortrait.setFitHeight(portraitScale);
+			this.animalMask.setFitHeight(portraitScale);
     	});
 		
 		this.animal.getAgeProperty().addListener((arg, oldAge, newAge) -> {
@@ -216,6 +222,11 @@ public class AnimalControl<T extends Animal> extends HBox {
     	this.animal.getExcrementPercentageProperty().addListener((arg, oldExcrementPercentage, newExcrementPercentage) -> {
     		this.excrementIndicator.progressProperty().setValue((this.animal.getExcrementPercentage()/100));
     	});
+    	
+    	this.animal.getHasMaskProperty().addListener((arg, oldMaskState, newMaskState) -> {
+    		this.animalMask.setVisible(newMaskState);;
+    	});
+    	
 	}
 	
 	/**
@@ -240,7 +251,7 @@ public class AnimalControl<T extends Animal> extends HBox {
 				MenuItem animalMenuItem = this.getMenuItemForAnimal(potentialFriend); 	// redeclare at each loop for event's local method
 				
 				animalMenuItem.setOnAction( e-> {
-					if (potentialFriend.getAnimal().isAlive()) // Check that other animal hasn't died since menu showed
+					if (this.animal.isAlive() && potentialFriend.getAnimal().isAlive()) // Check that neither animal died since menu showed //TODO: hide with signal
 					{
 						this.animal.changeEnergyBy(5);					//	Both get an energy boost.
 						potentialFriend.getAnimal().changeEnergyBy(5);	//
@@ -274,7 +285,7 @@ public class AnimalControl<T extends Animal> extends HBox {
 					if (	this.mainController.getAnimalsRegion().getChildren().size()		// 
 						== 	this.mainController.getAnimalsRegion().getMaxPopulation()) {	//	if Region is already full
 						this.mainController.getConsole().printLine("No free population slot."); 
-					} else if (potentialMate.getAnimal().isAlive()) // Check that other animal hasn't died since menu showed
+					} else if (this.animal.isAlive() && potentialMate.getAnimal().isAlive()) // Check that neither animal died since menu showed //TODO: hide with signal
 					{
 						T baby = this.animal.reproduceWith(potentialMate.getAnimal());	// Baby same subclass as current instance
 						

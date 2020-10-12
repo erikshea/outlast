@@ -11,19 +11,16 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 public class Animal {
 	protected String name;
-	protected double color;
+	protected double color;	// Color, as a hue variation from base picture (-1 to 1)
 	protected String type;
-	protected String naturalEnemyType;
+	protected String naturalEnemyType;	// Natural enemy
 	protected int lifeExpectancy;
-	protected SimpleDoubleProperty health,maxHealth,age,maxEnergy,energy,size,excrementPercentage;			// Current health
-	protected SimpleBooleanProperty alive;
+	protected SimpleDoubleProperty health,maxHealth,age,maxEnergy,energy,size,excrementPercentage;	
+	protected SimpleBooleanProperty alive, hasMask;
 	
 	protected double baseMaxHealth;		// Health at birth, max health grows with age.
 	protected double baseMaxEnergy;	// Energy at birth, max energy grows with age.
 	protected double maxSize;	// max attainable size. size depends on age 
-	
-	protected boolean hasMask;
-	protected String hairColor;
 	
 	/**
 	 * 	Only constructor, attributes set in GUI
@@ -33,23 +30,19 @@ public class Animal {
 		this.energy = new SimpleDoubleProperty();
 		this.maxHealth = new SimpleDoubleProperty();
 		this.maxEnergy = new SimpleDoubleProperty();
-		this.age = new SimpleDoubleProperty();
+		this.age = new SimpleDoubleProperty(0);
 		this.size = new SimpleDoubleProperty();
-		this.excrementPercentage = new SimpleDoubleProperty();
+		this.excrementPercentage = new SimpleDoubleProperty(0);
 		this.alive = new SimpleBooleanProperty(true);
-		
+		this.hasMask = new SimpleBooleanProperty(false);
 		this.reset();
 	}
-
 
 	/**
 	 * Default values for all parameter
 	 */
 	public void reset() {
 		this.setUpListeners();
-		this.age.setValue(0);
-		this.excrementPercentage.setValue(0);
-		this.hasMask = false;
 		this.setRandomName();
 		this.setColor(2*Math.random()-1);
 		this.maxHealth.setValue(this.baseMaxHealth);
@@ -60,8 +53,6 @@ public class Animal {
 
 	public void setUpListeners()
 	{    	
-
-    	
     	this.age.addListener((arg, oldAge, newAge) -> {
     		double timeElapsed = newAge.doubleValue() - oldAge.doubleValue();
     		this.changeExcrementPercentageBy((timeElapsed)*10);
@@ -118,7 +109,7 @@ public class Animal {
 	 * mask action: Removes mask if on, and vise versa
 	 */
 	public void toggleMask() {
-		this.hasMask = !this.hasMask;
+		this.hasMask.set(!this.hasMask.get());
 	}
 
 	/**
@@ -258,6 +249,9 @@ public class Animal {
 		return this.excrementPercentage;
 	}
 	
+	public final SimpleBooleanProperty getHasMaskProperty() {
+		return this.hasMask;
+	}
 	
 	public double getSize() {
 		return this.size.get();
