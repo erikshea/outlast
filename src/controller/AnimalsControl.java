@@ -30,6 +30,7 @@ public class AnimalsControl extends VBox{
   
     }
     
+    
     /**
      * Loads .fxml as root
      * @param a animal subclass
@@ -82,8 +83,8 @@ public class AnimalsControl extends VBox{
 		AnimalControl<T> ac = new AnimalControl<>(a);
 		
 		ac.setMainController(this.mainController);
-
-		this.mainController.getConsole().printLine(a.getName() + " the " + a.getType() + " is born.");
+    	
+		this.mainController.getConsole().printLine(a.getName() + " the " + util.TextUtils.capitalize(a.getType()) + " is born.");
 		
 		this.getChildren().add(ac);
 	}
@@ -105,29 +106,13 @@ public class AnimalsControl extends VBox{
 		{
 			@SuppressWarnings("unchecked")
 			AnimalControl<T> animalRegion = (AnimalControl<T>) n;
-			
-			animalRegion.refreshGui(years);
-		}
-	}
-	
-	public<T extends Animal> void clearDeadAnimals()
-	{
-		List<AnimalControl<T>> animalRegions = this.getAnimalRegions();
-		List<AnimalControl<T>> deadAnimalRegions = new ArrayList<>();
-		
-		
-		for (AnimalControl<T> a:animalRegions)
-		{
-			if(!a.getAnimal().isAlive()) {
-				deadAnimalRegions.add(a);
-				this.mainController.getConsole().printLine(a.getAnimal().getName() + " the " + a.getAnimal().getType() + " has died.");
-			}
-		}
-		this.getChildren().removeAll(deadAnimalRegions);
-	}
-	
 
-	
+			animalRegion.getAnimal().changeAgeBy(years);
+		}
+    	
+    	// Remove dead animals here for thread concurrency
+    	this.clearDeadAnimals();	// TODO : handle dead animals with signal (copy of state in CopyOnWriteArrayList to avoid concurrencyexception?)
+	}
 	
 	public<T extends Animal> List<AnimalControl<T>> getAnimalRegions()
 	{
@@ -147,4 +132,22 @@ public class AnimalsControl extends VBox{
 	public int getMaxPopulation() {
 		return this.maxPopulation;
 	}
+	
+	
+	public<T extends Animal> void clearDeadAnimals()
+	{
+		List<AnimalControl<T>> animalRegions = this.getAnimalRegions();
+		List<AnimalControl<T>> deadAnimalRegions = new ArrayList<>();
+		
+		
+		for (AnimalControl<T> a:animalRegions)
+		{
+			if(!a.getAnimal().isAlive()) {
+				deadAnimalRegions.add(a);
+				this.mainController.getConsole().printLine(a.getAnimal().getName() + " the " + a.getAnimal().getType() + " has died.");
+			}
+		}
+		this.getChildren().removeAll(deadAnimalRegions);
+	}
+	
 }

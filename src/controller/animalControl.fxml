@@ -16,6 +16,7 @@
 	stylesheets="@animalControl.css">
 	<children>
 		<HBox fx:id="animalProfile">
+			<Slider fx:id="colorSlider" min="-1" max="1" value="0" orientation="vertical"/>
 			<ImageView fx:id="animalPortrait"/>
 		</HBox>
 		<VBox styleClass="animal-info">
@@ -37,13 +38,7 @@
 			<children>
 				<HBox styleClass="animal-action-bar">
 					<children>
-						<Button styleClass="color">
-							<tooltip>
-								<Tooltip text="Dye hair." />
-							</tooltip>
-							<Slider fx:id="colorSlider"/>
-						</Button>
-
+					
 						<Button styleClass="eat">
 							<tooltip>
 								<Tooltip text="Eat." />

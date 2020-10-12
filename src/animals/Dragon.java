@@ -5,9 +5,9 @@ public class Dragon extends Animal {
 		this.type = "dragon";
 		this.naturalEnemyType = "monkey";
 		this.lifeExpectancy = 90;
-		this.baseMaxSize = 260;
-		this.energy = this.baseMaxEnergy = 90;
-		this.health = this.baseMaxHealth = 90;
+		this.maxSize = 260;
+		this.baseMaxEnergy = 90;
+		this.baseMaxHealth = 90;
 		super.reset();
 	}
 }

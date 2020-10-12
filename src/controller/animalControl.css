@@ -14,7 +14,7 @@
 #animalProfile{
 	-fx-alignment: bottom-left;
 	
-	-fx-pref-width: 124px;
+	-fx-pref-width: 145px;
 }
 
 #animalPortrait{
@@ -170,4 +170,8 @@ ProgressBar {
 
 #excrementIndicator .percentage {
     -fx-fill:null;
+}
+
+#colorSlider{
+	-fx-padding: 0 0 0 5;
 }

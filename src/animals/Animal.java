@@ -6,22 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 public class Animal {
 	protected String name;
 	protected double color;
 	protected String type;
 	protected String naturalEnemyType;
-	protected double age;
 	protected int lifeExpectancy;
-	protected double health;			// Current health
-	protected double baseMaxHealth;		// Health at birth, max health grows with age.
-	protected double energy;		// Current energy
-	protected double baseMaxEnergy;	// Energy at birth, max energy grows with age.
-	protected double foodPercentage;
+	protected SimpleDoubleProperty health,maxHealth,age,maxEnergy,energy,size,excrementPercentage;			// Current health
+	protected SimpleBooleanProperty alive;
 	
-	protected double excrementPercentage;
-
-	protected double baseMaxSize;	// max attainable size. size depends on age 
+	protected double baseMaxHealth;		// Health at birth, max health grows with age.
+	protected double baseMaxEnergy;	// Energy at birth, max energy grows with age.
+	protected double maxSize;	// max attainable size. size depends on age 
 	
 	protected boolean hasMask;
 	protected String hairColor;
@@ -30,6 +29,15 @@ public class Animal {
 	 * 	Only constructor, attributes set in GUI
 	 */
 	public Animal() {
+		this.health = new SimpleDoubleProperty();
+		this.energy = new SimpleDoubleProperty();
+		this.maxHealth = new SimpleDoubleProperty();
+		this.maxEnergy = new SimpleDoubleProperty();
+		this.age = new SimpleDoubleProperty();
+		this.size = new SimpleDoubleProperty();
+		this.excrementPercentage = new SimpleDoubleProperty();
+		this.alive = new SimpleBooleanProperty(true);
+		
 		this.reset();
 	}
 
@@ -38,52 +46,71 @@ public class Animal {
 	 * Default values for all parameter
 	 */
 	public void reset() {
-		this.age = 0;
-		this.foodPercentage = 100;
-		this.excrementPercentage = 0;
+		this.setUpListeners();
+		this.age.setValue(0);
+		this.excrementPercentage.setValue(0);
 		this.hasMask = false;
 		this.setRandomName();
 		this.setColor(2*Math.random()-1);
-    	this.setEnergy(this.getMaxEnergy()/2);	// energy at 50%
-        this.setHealth((2*Math.random()+4)/5 *this.getMaxHealth()); // random health between 80% and 100%
+		this.maxHealth.setValue(this.baseMaxHealth);
+		this.maxEnergy.setValue(this.baseMaxEnergy);
+    	this.energy.setValue(this.maxEnergy.get()/2);	// energy at 50%
+        this.health.setValue((2*Math.random()+3)/5 * this.maxHealth.get()); // random health between 80% and 100%
 	}
 
-	/**
-	 * Size, depends on age
-	 * @return
-	 */
-	public double getSize() //TODO: add growth bonus from food
-	{
-		double growthRange = this.baseMaxSize-this.getBaseSize();
+	public void setUpListeners()
+	{    	
+
+    	
+    	this.age.addListener((arg, oldAge, newAge) -> {
+    		double timeElapsed = newAge.doubleValue() - oldAge.doubleValue();
+    		this.changeExcrementPercentageBy((timeElapsed)*10);
+    		
+    		double growthRange = this.maxSize-this.getBaseSize();
+
+    		double maturationRatio = newAge.doubleValue()  / this.getMatureAge();
+    		if(maturationRatio>1)
+    		{
+    			maturationRatio=1;
+    		}
+    		
+    		this.size.setValue(maturationRatio*growthRange + this.getBaseSize());
+    		
+    		if (this.excrementPercentage.get() >= 100 || this.isGinger()) {	// Lose health if bowels impacted, or if afflicted by gingerness
+    			this.changeHealthBy(-timeElapsed*10);
+    		}
+
+    		if (this.lifeExpectancy < newAge.doubleValue() ) {
+    			this.alive.set(false);
+    		}
+    	});
+    	
+    	this.health.addListener((arg, oldHealth, newHealth) -> {
+    		if ( newHealth.doubleValue() <= 0 ) {
+    			this.alive.set(false);
+    		}
+    	});
+    	
+    	// maxHealth and maxEnergy increase with size.
+    	this.size.addListener((arg, oldSize, newSize) -> {
+    		double growthRatio = newSize.doubleValue()/this.maxSize;
+    		
+    		this.maxHealth.setValue(this.baseMaxHealth * growthRatio);
+
+    		this.maxEnergy.setValue(this.baseMaxEnergy * growthRatio);
+    	});
+    	
+
+		// when maxHealth changes, current health changes by the same ratio
+    	this.maxHealth.addListener((arg, oldMaxHealth, newMaxHealth) -> {
+    		this.health.setValue( this.health.get() * newMaxHealth.doubleValue()/oldMaxHealth.doubleValue() );
+    	});
+
+		// when maxEnergy changes, current energy changes by the same ratio
+    	this.maxEnergy.addListener((arg, oldMaxEnergy, newMaxEnergy) -> {
+    		this.energy.setValue( this.energy.get() * newMaxEnergy.doubleValue()/oldMaxEnergy.doubleValue() );
+    	});
 		
-		return this.getMaturationRatio()*growthRange + this.getBaseSize();
-	}
-	
-	/**
-	 * Calculates current size as a percentage of max size.
-	 * @return size percentage.
-	 */
-	public double getSizePercentage()
-	{
-		return 100*this.getSize()/this.baseMaxSize;
-	}
-	
-	/**
-	 * Is animal alive?
-	 * @return true if alive
-	 */
-	public boolean isAlive()
-	{
-		return !(this.getHealth() <= 0);
-	}
-	
-
-
-	/**
-	 * Sets an animal as dead.
-	 */
-	public void makeDie(boolean a) {
-		this.setHealth(0);
 	}
 
 	
@@ -130,7 +157,7 @@ public class Animal {
 	 */
 	public void changeHealthBy(double ammount)
 	{
-		this.setHealth(this.getHealth() + ammount);
+		this.health.setValue(this.health.get() + ammount);
 	}
 	
 	/*
@@ -138,7 +165,7 @@ public class Animal {
 	 */
 	public void changeEnergyBy(int ammount)
 	{
-		this.setEnergy(this.getEnergy() + ammount);
+		this.energy.setValue(this.energy.get() + ammount);
 	}
 	
 
@@ -148,7 +175,7 @@ public class Animal {
 	 */
 	public void changeAgeBy(double ammount)
 	{
-		this.setAge(this.getAge() + ammount);
+		this.age.setValue(this.age.get() + ammount);
 	}
 	
 	
@@ -160,60 +187,14 @@ public class Animal {
 	{
 		return (this.lifeExpectancy / 5);
 	}
-	
-	
-	/**
-	 * Get the maturation ratio between current age and mature age: a double from 0 (at birth) to 1 (has stopped growing)
-	 * @return
-	 */
-	public double getMaturationRatio()
-	{
-		double growthRatio = this.age  / this.getMatureAge();
-		
-		if (growthRatio>1)
-		{
-			growthRatio = 1;
-		}
-		
-		return growthRatio;
-	}
-	
-	/**
-	 * Get the size ratio between current size and mature size
-	 * @return
-	 */
-	public double getGrowthRatio()
-	{
-		return this.getSize()/this.baseMaxSize;
-	}
-	
-	/**
-	 * Maximum health at current stage of growth
-	 * @return
-	 */
-	public double getMaxHealth()
-	{
-		return this.baseMaxHealth * this.getGrowthRatio();
-	}
-	
-	
-	/**
-	 * Maximum health at current stage of growth
-	 * @return
-	 */
-	public double getMaxEnergy()
-	{
-		return this.baseMaxEnergy * this.getGrowthRatio();
-	}
-	
-	
+
 	/**
 	 * Size at birth
 	 * @return
 	 */
 	public  double getBaseSize()
 	{
-		return this.baseMaxSize/4;
+		return this.maxSize/4;
 	}
 
 
@@ -222,46 +203,12 @@ public class Animal {
 	 * @param h
 	 */
 	public void setHealth(double h) {
-		if (h <= this.getMaxHealth()) {
-			this.health = h;
+		if (h <= this.maxHealth.get()) {
+			this.health.setValue(h);
 		} else {
-			this.health = this.getMaxHealth();
+			this.health.setValue(this.maxHealth.get());
 		}
 	}
-	
-	/**
-	 * Sets age, if above life expectancy, die
-	 * @param newAge
-	 */
-	protected void setAge(double newAge) {
-		double timeElapsed = newAge - this.age;
-		
-		this.changeExcrementPercentageBy((timeElapsed)*15);
-		
-		double oldMaxHealth = this.getMaxHealth();
-		double oldMaxEnergy = this.getMaxEnergy();
-		
-		this.age = newAge;
-		
-		// current health changes by a factor of newMaxHealth/oldMaxHealth
-		this.setHealth(this.getMaxHealth()/oldMaxHealth * this.getHealth());
-		
-		// current energy changes by a factor of newMaxHealth/oldMaxHealth
-		this.setEnergy(this.getMaxEnergy()/oldMaxEnergy * this.getEnergy());
-		
-		
-		if (this.excrementPercentage >= 100)
-		{
-			this.changeHealthBy(-timeElapsed*20);
-		}
-		
-
-		if (this.lifeExpectancy < this.age)
-		{
-			this.setHealth(0);
-		}
-	}
-
 	
 	public void setName(String n) {
 		this.name = n;
@@ -271,7 +218,6 @@ public class Animal {
 		return this.name;
 	}
 
-
 	
 	public double getColor() {
 		return this.color;
@@ -280,36 +226,72 @@ public class Animal {
 	public void setColor(double c) {
 		this.color = c;
 	}
+	
+	public double getMaxSize() {
+		return this.maxSize;
+	}
 
-	public double getHealth() {
+	public final SimpleDoubleProperty getSizeProperty() {
+		return this.size;
+	}
+	
+	public final SimpleDoubleProperty getHealthProperty() {
 		return this.health;
 	}
-	
 
-	public double getAge() {
+	public final SimpleDoubleProperty getMaxHealthProperty() {
+		return this.maxHealth;
+	}
+
+	public final SimpleDoubleProperty getMaxEnergyProperty() {
+		return this.maxEnergy;
+	}
+
+	public final SimpleDoubleProperty getAgeProperty() {
 		return this.age;
 	}
-	
-	public String getType() {
-		return this.type;
-	}
-	
-	public double getEnergy() {
+	public final SimpleDoubleProperty getEnergyProperty() {
 		return this.energy;
 	}
 
-	public void setEnergy(double m) {
-		this.energy = m;
+	public final SimpleDoubleProperty getExcrementPercentageProperty() {
+		return this.excrementPercentage;
+	}
+	
+	
+	public double getSize() {
+		return this.size.get();
+	}
+	
+	public double getHealth() {
+		return this.health.get();
 	}
 
+	public double getMaxHealth() {
+		return this.maxHealth.get();
+	}
+
+	public double getMaxEnergy() {
+		return this.maxEnergy.get();
+	}
+
+	public double getAge() {
+		return this.age.get();
+	}
+	public double getEnergy() {
+		return this.energy.get();
+	}
+
+	public double getExcrementPercentage() {
+		return this.excrementPercentage.get();
+	}
+	
+	
 	public double getLifeExpectancy() {
 		return this.lifeExpectancy;
 	}
 	
 	
-	public double getExcrementPercentage() {
-		return this.excrementPercentage;
-	}
 	
 	public String getNaturalEnemyType() {
 		return this.naturalEnemyType;
@@ -324,15 +306,13 @@ public class Animal {
 			p = 0;
 		}
 		
-		this.excrementPercentage = p;
+		this.excrementPercentage.setValue(p);
 	}
 	
 	public void changeExcrementPercentageBy(double p) {
-		this.setExcrementPercentage(this.excrementPercentage + p);
+		this.excrementPercentage.setValue(this.excrementPercentage.get() + p);
 	}
 	
-	
-    
     /**
      * Reads a file consisting of a list of names, sets name a random one
      */
@@ -356,5 +336,25 @@ public class Animal {
     	int nameIndex = (int) (names.size() * Math.random());
     	
     	this.name = names.get(nameIndex);
+    }
+
+	
+	public String getType() {
+		return this.type;
+	}
+	
+	
+    public boolean isGinger()
+    {
+    	return -0.1 < this.color && this.color < 0.1;
+    }
+    
+	public final SimpleBooleanProperty getIsAliveProperty() {
+		return this.alive;
+	}
+    
+    public boolean isAlive()
+    {
+    	return this.alive.get();
     }
 }

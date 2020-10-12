@@ -1,0 +1,14 @@
+@font-face {
+    src: url("../../resources/fonts/Ubuntu-Bold.ttf"),
+}
+
+
+.menu-item{
+    -fx-font-family: Ubuntu;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.menu-item:focused {
+	-fx-background-color: #8ad2ff;
+}
