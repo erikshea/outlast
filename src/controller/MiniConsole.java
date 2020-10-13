@@ -55,6 +55,7 @@ public class MiniConsole extends AnchorPane {
         }
     }
     
+    
     public void printLine(String line)
     {
     	ObservableList<Node> consoleLines = FXCollections.observableArrayList(this.consolePane.getChildren());

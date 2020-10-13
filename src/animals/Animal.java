@@ -17,6 +17,7 @@ public class Animal {
 	protected int lifeExpectancy;
 	protected SimpleDoubleProperty health,maxHealth,age,maxEnergy,energy,size,excrementPercentage;	
 	protected SimpleBooleanProperty alive, hasMask;
+	protected String potentialCauseOfDeath;
 	
 	protected double baseMaxHealth;		// Health at birth, max health grows with age.
 	protected double baseMaxEnergy;	// Energy at birth, max energy grows with age.
@@ -55,7 +56,7 @@ public class Animal {
 	{    	
     	this.age.addListener((arg, oldAge, newAge) -> {
     		double timeElapsed = newAge.doubleValue() - oldAge.doubleValue();
-    		this.changeExcrementPercentageBy((timeElapsed)*10);
+    		this.changeExcrementPercentageBy((timeElapsed)*5);
     		
     		double growthRange = this.maxSize-this.getBaseSize();
 
@@ -67,15 +68,19 @@ public class Animal {
     		
     		this.size.setValue(maturationRatio*growthRange + this.getBaseSize());
     		
-    		if (this.excrementPercentage.get() >= 100 || this.isGinger()) {	// Lose health if bowels impacted, or if afflicted by gingerness
-    			this.changeHealthBy(-timeElapsed*10);
+    		if (this.excrementPercentage.get() >= 100) {
+    			this.potentialCauseOfDeath = "bowels";	
+    			this.changeHealthBy(-timeElapsed*15);	// Lose health if bowels impacted
     		}
-
+    		
+    		// if age exceeds life expectancy, set to dead
     		if (this.lifeExpectancy < newAge.doubleValue() ) {
+    			this.potentialCauseOfDeath = "age";
     			this.alive.set(false);
     		}
     	});
     	
+    	// if health dips below 0, set to dead
     	this.health.addListener((arg, oldHealth, newHealth) -> {
     		if ( newHealth.doubleValue() <= 0 ) {
     			this.alive.set(false);
@@ -150,6 +155,16 @@ public class Animal {
 	{
 		this.health.setValue(this.health.get() + ammount);
 	}
+	
+	/*
+	 * Change health by ammount (negative or positive), with a reason for the change (to keep track of cause of death).
+	 */
+	public void changeHealthBy(double ammount,String reason)
+	{
+		this.health.setValue(this.health.get() + ammount);
+		this.potentialCauseOfDeath = reason;
+	}
+	
 	
 	/*
 	 * Change energy by ammount (negative or positive)
@@ -337,11 +352,6 @@ public class Animal {
 		return this.type;
 	}
 	
-	
-    public boolean isGinger()
-    {
-    	return -0.1 < this.color && this.color < 0.1;
-    }
     
 	public final SimpleBooleanProperty getIsAliveProperty() {
 		return this.alive;
@@ -350,5 +360,10 @@ public class Animal {
     public boolean isAlive()
     {
     	return this.alive.get();
+    }
+    
+    public String getPotentialCauseOfDeath()
+    {
+    	return this.potentialCauseOfDeath;
     }
 }

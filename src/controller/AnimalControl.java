@@ -43,7 +43,6 @@ public class AnimalControl<T extends Animal> extends HBox {
     
     private MainWindowControl mainController;
     
-    
     /**
      * Set up view elements
      */
@@ -69,8 +68,10 @@ public class AnimalControl<T extends Animal> extends HBox {
     	this.setUpActionButtons();
     	
     	this.colorSlider.valueProperty().addListener((observable, oldHue, newHue) -> {
-    		this.animal.setColor(newHue.doubleValue());
-    		this.applyPortraitColor();	// TODO: listener on animal
+    		if (-0.1 > newHue.doubleValue() || newHue.doubleValue() > 0.1) {	// Can't change color to ginger
+        		this.animal.setColor(newHue.doubleValue());
+        		this.applyPortraitColor();	// TODO: listener on animal
+    		}
         });
 
     	this.addGuiListeners();
@@ -118,10 +119,11 @@ public class AnimalControl<T extends Animal> extends HBox {
     	{
 	    	case "eat":
 	    		this.animal.changeHealthBy(5);
+	    		this.animal.changeExcrementPercentageBy(5);
 	    		break;
 	    	
 			case "smoke":
-				this.animal.changeHealthBy(-5);
+				this.animal.changeHealthBy(-5,"smoke");
 				this.animal.changeEnergyBy(5);
 				break;
 				
@@ -131,9 +133,12 @@ public class AnimalControl<T extends Animal> extends HBox {
 				
 			case "exercise":
 				this.animal.changeEnergyBy(-5);
+	    		this.animal.changeHealthBy(5);
+				
 				break;
 				
 			case "bathroom":
+				this.animal.changeEnergyBy(-20);
 				this.animal.setExcrementPercentage(0);
 				break;
 			
@@ -313,4 +318,5 @@ public class AnimalControl<T extends Animal> extends HBox {
 
 		return animalMenuItem;
 	}
+
 }

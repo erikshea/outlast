@@ -144,7 +144,27 @@ public class AnimalsControl extends VBox{
 		{
 			if(!a.getAnimal().isAlive()) {
 				deadAnimalRegions.add(a);
-				this.mainController.getConsole().printLine(a.getAnimal().getName() + " the " + a.getAnimal().getType() + " has died.");
+				
+				String deathMessage = a.getAnimal().getName() + " the " + a.getAnimal().getType() + " has died of ";
+				
+				switch(a.getAnimal().getPotentialCauseOfDeath())
+				{
+					case "smoke" : 
+						deathMessage += "lung cancer.";
+						break;
+					case "bowels" :
+						deathMessage += "impacted bowels.";
+						break;
+					case "age" :
+						deathMessage += "old age.";
+						break;
+					default :
+						deathMessage += "unknown causes.";
+						break;
+						
+				}
+				
+				this.mainController.getConsole().printLine(deathMessage);
 			}
 		}
 		this.getChildren().removeAll(deadAnimalRegions);
