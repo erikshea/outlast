@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
  */
 public class AnimalsControl extends VBox{
     private MainWindowControl mainController;
-    private int maxPopulation;
+    private final int maxPopulation = 8;
     
     /**
      * Spawn initial animals
@@ -54,8 +54,6 @@ public class AnimalsControl extends VBox{
      */
 	public void spawnRandomAnimals(int ammount)
 	{
-		this.maxPopulation = 8;
-		
 		int rand;
 		for(int i = 0;i<ammount;i++)
 		{
@@ -144,27 +142,6 @@ public class AnimalsControl extends VBox{
 		{
 			if(!a.getAnimal().isAlive()) {
 				deadAnimalRegions.add(a);
-				
-				String deathMessage = a.getAnimal().getName() + " the " + a.getAnimal().getType() + " has died of ";
-				
-				switch(a.getAnimal().getPotentialCauseOfDeath())
-				{
-					case "smoke" : 
-						deathMessage += "lung cancer.";
-						break;
-					case "bowels" :
-						deathMessage += "impacted bowels.";
-						break;
-					case "age" :
-						deathMessage += "old age.";
-						break;
-					default :
-						deathMessage += "unknown causes.";
-						break;
-						
-				}
-				
-				this.mainController.getConsole().printLine(deathMessage);
 			}
 		}
 		this.getChildren().removeAll(deadAnimalRegions);

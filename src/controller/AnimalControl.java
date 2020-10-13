@@ -229,7 +229,32 @@ public class AnimalControl<T extends Animal> extends HBox {
     	});
     	
     	this.animal.getHasMaskProperty().addListener((arg, oldMaskState, newMaskState) -> {
-    		this.animalMask.setVisible(newMaskState);;
+    		this.animalMask.setVisible(newMaskState);
+    	});
+    	
+    	this.animal.getIsAliveProperty().addListener((arg, oldAliveState, newAliveState) -> {
+    		if (!newAliveState)
+    		{
+				String deathMessage = this.animal.getName() + " the " + this.animal.getType() + " has died of ";
+				
+				switch(this.animal.getPotentialCauseOfDeath())
+				{
+					case "smoke" : 
+						deathMessage += "lung cancer.";
+						break;
+					case "bowels" :
+						deathMessage += "impacted bowels.";
+						break;
+					case "age" :
+						deathMessage += "old age.";
+						break;
+					default :
+						deathMessage += "unknown causes.";
+						break;
+				}
+				
+				this.mainController.getConsole().printLine(deathMessage);
+    		}
     	});
     	
 	}

@@ -38,7 +38,7 @@ public class MainWindowControl extends BorderPane{
 		this.currentGameYearsElapsed = 0;
 		this.console.clear(); 						// Clear console
 		this.animalsRegion.getChildren().clear();	// Clear animals
-		this.animalsRegion.spawnRandomAnimals(8);	// Create 8 new animals
+		this.animalsRegion.spawnRandomAnimals(this.animalsRegion.getMaxPopulation());	// Populate with animals
 		this.gameTimeline.play();					// Restart time line					
 	}
 	
