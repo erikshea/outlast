@@ -26,7 +26,7 @@ public class ImitamagochiMain extends Application {
 			MainWindowControl mainWindow = new MainWindowControl(); // Main window is handled by its own controller
 			Scene scene = new Scene(mainWindow, 730, 950);	// Set window size, with main window controller as root
 
-			// Context menus exist outside of node tree, so styling done in scene
+			// Context menus exist outside of node tree, so their styling done in scene
 			scene.getStylesheets().add(this.getClass().getResource("contextMenus.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Imitamagotchi");

@@ -341,7 +341,7 @@ public class AnimalControl<T extends Animal> extends HBox {
 			AnimalControl<T> potentialMate = (AnimalControl<T>) n;
 
 			if (!this.equals(potentialMate)) {	// can't reproduce with self
-				animalMenuItem = this.getMenuItemForAnimal(potentialMate); 	// redeclare at each loop for local event method
+				animalMenuItem = this.getMenuItemForAnimal(potentialMate);
 
 				animalMenuItem.setOnAction( e-> {
 					if (	this.mainController.getAnimalsRegion().getChildren().size()		// 
