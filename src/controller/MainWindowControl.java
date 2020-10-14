@@ -83,7 +83,7 @@ public class MainWindowControl extends BorderPane{
 	}
 	
 	/*
-	 * Reference to console controller, for in-game messages
+	 * Get console, for in-game messages
 	 */
 	public MiniConsole getConsole()
 	{
@@ -91,7 +91,7 @@ public class MainWindowControl extends BorderPane{
 	}
 
 	/*
-	 * Reference to the region that contains the animals
+	 * Get region that contains the animals
 	 */
 	public AnimalsControl getAnimalsRegion()
 	{

@@ -194,7 +194,7 @@ public class AnimalControl<T extends Animal> extends HBox {
     }
     
     /**
-     * Allow access to animal sublclass
+     * Get animal object
      * @return animal subclass T
      */
     public T getAnimal()
@@ -333,6 +333,7 @@ public class AnimalControl<T extends Animal> extends HBox {
 		
 		// fetch all animals of same type
 		Set<Node> potentialMates = this.mainController.getAnimalsRegion().lookupAll("." + this.getAnimal().getType());
+		MenuItem animalMenuItem;
 		
 		for ( Node n : potentialMates )	// Loop through potential mates
 		{
@@ -340,7 +341,7 @@ public class AnimalControl<T extends Animal> extends HBox {
 			AnimalControl<T> potentialMate = (AnimalControl<T>) n;
 
 			if (!this.equals(potentialMate)) {	// can't reproduce with self
-				MenuItem animalMenuItem = this.getMenuItemForAnimal(potentialMate); 	// redeclare at each loop for local event method
+				animalMenuItem = this.getMenuItemForAnimal(potentialMate); 	// redeclare at each loop for local event method
 
 				animalMenuItem.setOnAction( e-> {
 					if (	this.mainController.getAnimalsRegion().getChildren().size()		// 
