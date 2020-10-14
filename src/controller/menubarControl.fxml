@@ -10,8 +10,8 @@
 	stylesheets="@menubarControl.css">
 	<menus>
 		<Menu text="File">
-			<MenuItem fx:id="refreshAnimals" text="Refresh Animals" />
-			<MenuItem fx:id="exit" text="Quit" />
+			<MenuItem fx:id="newGame" text="New game" />
+			<MenuItem fx:id="quit" text="Quit" />
 		</Menu>
 	</menus>
 </fx:root>

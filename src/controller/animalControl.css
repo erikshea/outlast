@@ -113,7 +113,7 @@
 .animal-action-bar Button{
 	-fx-pref-height: 40px;
 	-fx-min-width: 40px;
-	-fx-background-color: transparent;
+	-fx-background-color: transparent; /* will use image set in controller */
 }
 
 
@@ -168,7 +168,7 @@ ProgressBar {
 	-fx-accent: #714223;
 }
 
-#excrementIndicator .percentage {
+#excrementIndicator .percentage { /* hide percentage label */
     -fx-fill:null;
 }
 

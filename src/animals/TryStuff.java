@@ -1,7 +1,6 @@
 package animals;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +24,7 @@ public class TryStuff {
 	}
 	
 	
+	
     public static void parseSpans(String text) {
         String spanPattern = "([^<]*)(?:<span class='([^']+)'>([^<]+)<\\/span>(.*))?";
         
@@ -46,7 +46,6 @@ public class TryStuff {
     		}
     	}
     }
-    
     
     
 }

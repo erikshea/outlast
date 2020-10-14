@@ -14,26 +14,14 @@ import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
 /**
- * 
- * Sets up, populates and and controls interactions between a group of animal regions.
- *
+ * Sets up, populates and controls interactions between a group of animal regions.
  */
 public class AnimalsControl extends VBox{
-    private MainWindowControl mainController;
-    private final int maxPopulation = 8;
-    
-    /**
-     * Spawn initial animals
-     */
-    public void initialize()
-	{
-  
-    }
-    
+    private MainWindowControl mainController;	// for access to other controllers
+    private final int maxPopulation = 8;		// max simultaneous animals
     
     /**
      * Loads .fxml as root
-     * @param a animal subclass
      */
     public AnimalsControl()
     {
@@ -61,28 +49,27 @@ public class AnimalsControl extends VBox{
 			
 			if (rand >= 85 )
 			{
-				this.addAnimalControl(new Dragon());
+				this.addAnimalControl(new Dragon());	// 15% chance
 			} else if (rand >= 60) {
-				this.addAnimalControl(new Monkey());
+				this.addAnimalControl(new Monkey());	// 25% chance
 			} else if (rand >= 30 ) {
-				this.addAnimalControl(new Dog());
+				this.addAnimalControl(new Dog());		// 30% chance
 			} else {
-				this.addAnimalControl(new Cat());
+				this.addAnimalControl(new Cat());		// 30% chance
 			}
 		}
 	}
 
 	/**
 	 * Adds an animal region to the current animals region
-	 * @param <T> Animal subtype
-	 * @param a Animal subtype
+	 * @param a Animal subclass
 	 */
 	public <T extends Animal> void addAnimalControl(T a) {
 		AnimalControl<T> ac = new AnimalControl<>(a);
 		
-		ac.setMainController(this.mainController);
+		ac.setMainController(this.mainController); // for access to other controllers
     	
-		this.mainController.getConsole().printLine(a.getName() + " the " + util.TextUtils.capitalize(a.getType()) + " is born.");
+		this.mainController.getConsole().printLine(a.getName() + " the " + a.getType() + " is born.");
 		
 		this.getChildren().add(ac);
 	}
@@ -96,20 +83,25 @@ public class AnimalsControl extends VBox{
 		this.mainController = c;
 	}
 	
+	/**
+	 * Increases the age of all animals in the region
+	 * @param years
+	 */
 	public<T extends Animal> void increaseAges(double years)
 	{
-		ObservableList<Node> nodes = this.getChildren();
+		//ObservableList<Node> nodes = this.getChildren();
+		List<AnimalControl<T>> animalRegions = this.getAnimalRegions();
 		
-		for (Node n:nodes)
+		for (AnimalControl<T> animalRegion:animalRegions)
 		{
-			@SuppressWarnings("unchecked")
-			AnimalControl<T> animalRegion = (AnimalControl<T>) n;
-
 			animalRegion.getAnimal().changeAgeBy(years);
+			
+	    	// Remove dead animals here and not by listening to isAlive property to avoid concurrencyException
+	    	// TODO : get around with copy of state in CopyOnWriteArrayList?
+			if(!animalRegion.getAnimal().isAlive()) {
+				this.getChildren().remove(animalRegion);
+			}
 		}
-    	
-    	// Remove dead animals here for thread concurrency
-    	this.clearDeadAnimals();	// TODO : handle dead animals with signal (copy of state in CopyOnWriteArrayList to avoid concurrencyexception?)
 	}
 	
 	public<T extends Animal> List<AnimalControl<T>> getAnimalRegions()
@@ -118,8 +110,8 @@ public class AnimalsControl extends VBox{
 		ObservableList<Node> nodes = this.getChildren();
 
 		for (int i=0;i<nodes.size();i++) {
-			@SuppressWarnings("unchecked")	// Only AnimalControl nodes in children
-			// Have to redeclare temp at every iteration to suppress warnings
+			@SuppressWarnings("unchecked")
+			// Have to redeclare temp at every iteration to be able to suppress warnings. TODO: find way around
 			AnimalControl<T> temp = (AnimalControl<T>) nodes.get(i);	
 			animalRegions.add(temp );
 		}
@@ -127,24 +119,13 @@ public class AnimalsControl extends VBox{
 		return animalRegions;
 	}
 	
+	/**
+	 * get max population allowed allowed at once
+	 * @return max population
+	 */
 	public int getMaxPopulation() {
 		return this.maxPopulation;
 	}
-	
-	
-	public<T extends Animal> void clearDeadAnimals()
-	{
-		List<AnimalControl<T>> animalRegions = this.getAnimalRegions();
-		List<AnimalControl<T>> deadAnimalRegions = new ArrayList<>();
-		
-		
-		for (AnimalControl<T> a:animalRegions)
-		{
-			if(!a.getAnimal().isAlive()) {
-				deadAnimalRegions.add(a);
-			}
-		}
-		this.getChildren().removeAll(deadAnimalRegions);
-	}
+
 	
 }

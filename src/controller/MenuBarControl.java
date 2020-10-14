@@ -1,33 +1,26 @@
 package controller;
 
 import java.io.IOException;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 
 /**
- * Sets up and controls the application's menu bar
+ * Sets up and controls the application's main menu
  */
 public class MenuBarControl extends MenuBar {
 	
-    @FXML private MenuItem refreshAnimals,exit;
-    private MainWindowControl mainController;
+    @FXML private MenuItem newGame, quit;		// menu items in .fxml
+    private MainWindowControl mainController;	// for access to other controllers
 	
 	public void initialize()
 	{
-		MenuBarControl me = this;
-
-		// "Refresh Animals" menu item
-		this.refreshAnimals.setOnAction( e -> { 
-            	// delete them all
-            	me.mainController.newGame();
-        }); 
-        
-        this.exit.setOnAction( e -> { System.exit(0); }  );
+		// "New game" menu item
+		this.newGame.setOnAction( e -> { this.mainController.newGame(); } ); 
+		
+		// "Quit" menu item
+        this.quit.setOnAction( e -> { System.exit(0); } );
 	}
 	
     /**

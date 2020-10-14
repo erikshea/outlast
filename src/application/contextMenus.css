@@ -2,11 +2,10 @@
     src: url("../../resources/fonts/Ubuntu-Bold.ttf"),
 }
 
-
-.menu-item{
+.menu-item {
     -fx-font-family: Ubuntu;
-    -fx-font-size: 14px;
     -fx-font-weight: bold;
+    -fx-font-size: 14px;
 }
 
 .menu-item:focused {
