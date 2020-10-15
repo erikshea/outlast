@@ -2,6 +2,7 @@ package animals;
 
 public class Cat extends Animal {
 
+	// Subclass-specific property values
 	public void reset(){
 		this.type = "cat";
 		this.naturalEnemyType = "dog";
@@ -11,7 +12,4 @@ public class Cat extends Animal {
 		this.baseMaxHealth = 50;
 		super.reset();
 	}
-	
-	
-	
 }

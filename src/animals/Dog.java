@@ -1,6 +1,8 @@
 package animals;
 
 public class Dog extends Animal {
+	
+	// Subclass-specific property values
 	public void reset(){
 		this.type = "dog";
 		this.naturalEnemyType = "cat";

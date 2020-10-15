@@ -9,6 +9,11 @@ import java.util.Scanner;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
+/**
+ * Represents an Animal. Parameters update as age increases. Superclass for other animal types
+ * @author Erik Shea
+ *
+ */
 public class Animal {
 	protected String name;
 	protected double color;	// Color, as a hue variation from base picture (-1 to 1)
@@ -24,7 +29,7 @@ public class Animal {
 	protected double maxSize;	// max attainable size. size depends on age 
 	
 	/**
-	 * 	Only constructor, attributes set in GUI
+	 * 	Initialize shared observable properties
 	 */
 	public Animal() {
 		this.health = new SimpleDoubleProperty();
@@ -40,7 +45,7 @@ public class Animal {
 	}
 
 	/**
-	 * Default values for all parameter
+	 * Initialize shared properties that depend on subclass-specific properties
 	 */
 	public void reset() {
 		this.setUpListeners();
@@ -52,29 +57,36 @@ public class Animal {
         this.health.setValue((2*Math.random()+3)/5 * this.maxHealth.get()); // random health between 80% and 100%
 	}
 
+	/*
+	 * Use listeners to automatically update inter-dependent properties.
+	 */
 	public void setUpListeners()
 	{    	
+		// age-dependent properties
     	this.age.addListener((arg, oldAge, newAge) -> {
+    		// calculate time elapsed since last age update
     		double timeElapsed = newAge.doubleValue() - oldAge.doubleValue();
-    		this.changeExcrementPercentageBy((timeElapsed)*5);
+    		this.changeExcrementPercentageBy((timeElapsed)*5); // Excrement goes up
     		
+    		// How much animal grows between birth and death
     		double growthRange = this.maxSize-this.getBaseSize();
-
+    		
+    		// How far along is animal to full maturity
     		double maturationRatio = newAge.doubleValue()  / this.getMatureAge();
-    		if(maturationRatio>1)
-    		{
+    		if(maturationRatio>1) {
     			maturationRatio=1;
     		}
     		
+    		// Size depends on both of the above
     		this.size.setValue(maturationRatio*growthRange + this.getBaseSize());
     		
     		if (this.excrementPercentage.get() >= 100) {
-    			this.potentialCauseOfDeath = "bowels";	
+    			this.potentialCauseOfDeath = "bowels";	// In case it kills animal
     			this.changeHealthBy(-timeElapsed*15);	// Lose health if bowels impacted
     		}
     		
     		// if age exceeds life expectancy, set to dead
-    		if (this.lifeExpectancy < newAge.doubleValue() ) {
+    		if (this.lifeExpectancy < newAge.doubleValue() ) {	// if too old
     			this.potentialCauseOfDeath = "age";
     			this.alive.set(false);
     		}
@@ -125,11 +137,11 @@ public class Animal {
 	public<T extends Animal> T reproduceWith(T partner) {
 		try {
 			@SuppressWarnings("unchecked")
-		 	T baby = (T)this.getClass().getConstructor().newInstance(); // use constructor to always return animal of correct subclass
+		 	T baby = (T)this.getClass().getConstructor().newInstance(); // use newInstance to always return animal of correct subclass
 			
 			baby.combineTraits(this, partner);
 			
-			return baby; // use constructor to always return animal of correct subclass
+			return baby;
 		} catch (Exception E)
 		{
 			return null;
@@ -216,95 +228,7 @@ public class Animal {
 		}
 	}
 	
-	public void setName(String n) {
-		this.name = n;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
 	
-	public double getColor() {
-		return this.color;
-	}
-
-	public void setColor(double c) {
-		this.color = c;
-	}
-	
-	public double getMaxSize() {
-		return this.maxSize;
-	}
-
-	public final SimpleDoubleProperty getSizeProperty() {
-		return this.size;
-	}
-	
-	public final SimpleDoubleProperty getHealthProperty() {
-		return this.health;
-	}
-
-	public final SimpleDoubleProperty getMaxHealthProperty() {
-		return this.maxHealth;
-	}
-
-	public final SimpleDoubleProperty getMaxEnergyProperty() {
-		return this.maxEnergy;
-	}
-
-	public final SimpleDoubleProperty getAgeProperty() {
-		return this.age;
-	}
-	public final SimpleDoubleProperty getEnergyProperty() {
-		return this.energy;
-	}
-
-	public final SimpleDoubleProperty getExcrementPercentageProperty() {
-		return this.excrementPercentage;
-	}
-	
-	public final SimpleBooleanProperty getHasMaskProperty() {
-		return this.hasMask;
-	}
-	
-	public double getSize() {
-		return this.size.get();
-	}
-	
-	public double getHealth() {
-		return this.health.get();
-	}
-
-	public double getMaxHealth() {
-		return this.maxHealth.get();
-	}
-
-	public double getMaxEnergy() {
-		return this.maxEnergy.get();
-	}
-
-	public double getAge() {
-		return this.age.get();
-	}
-	public double getEnergy() {
-		return this.energy.get();
-	}
-
-	public double getExcrementPercentage() {
-		return this.excrementPercentage.get();
-	}
-	
-	
-	public double getLifeExpectancy() {
-		return this.lifeExpectancy;
-	}
-	
-	
-	
-	public String getNaturalEnemyType() {
-		return this.naturalEnemyType;
-	}
 	
 	/**
 	 * Sets current excrement level as a percentage. Negative values are reset to 0.
@@ -347,23 +271,118 @@ public class Animal {
     	this.name = names.get(nameIndex);
     }
 
+	// Generic getters + setters
+    
+    public void setName(String n) {
+		this.name = n;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
 	
-	public String getType() {
-		return this.type;
+	public double getColor() {
+		return this.color;
+	}
+
+	public void setColor(double c) {
+		this.color = c;
 	}
 	
-    
-	public final SimpleBooleanProperty getIsAliveProperty() {
-		return this.alive;
+	public double getMaxSize() {
+		return this.maxSize;
 	}
-    
-    public boolean isAlive()
-    {
-    	return this.alive.get();
-    }
     
     public String getPotentialCauseOfDeath()
     {
     	return this.potentialCauseOfDeath;
     }
+    
+    // Getters for observable properties. Always return final to protect against modification
+    
+	public final SimpleBooleanProperty getIsAliveProperty() {
+		return this.alive;
+	}
+	
+	public final SimpleDoubleProperty getSizeProperty() {
+		return this.size;
+	}
+	
+	public final SimpleDoubleProperty getHealthProperty() {
+		return this.health;
+	}
+
+	public final SimpleDoubleProperty getMaxHealthProperty() {
+		return this.maxHealth;
+	}
+
+	public final SimpleDoubleProperty getMaxEnergyProperty() {
+		return this.maxEnergy;
+	}
+
+	public final SimpleDoubleProperty getAgeProperty() {
+		return this.age;
+	}
+	public final SimpleDoubleProperty getEnergyProperty() {
+		return this.energy;
+	}
+
+	public final SimpleDoubleProperty getExcrementPercentageProperty() {
+		return this.excrementPercentage;
+	}
+	
+	public final SimpleBooleanProperty getHasMaskProperty() {
+		return this.hasMask;
+	}
+	
+	// Value getters for observable properties
+	
+    public boolean isAlive()
+    {
+    	return this.alive.get();
+    }
+    
+	public double getSize() {
+		return this.size.get();
+	}
+	
+	public double getHealth() {
+		return this.health.get();
+	}
+
+	public double getMaxHealth() {
+		return this.maxHealth.get();
+	}
+
+	public double getMaxEnergy() {
+		return this.maxEnergy.get();
+	}
+
+	public double getAge() {
+		return this.age.get();
+	}
+	public double getEnergy() {
+		return this.energy.get();
+	}
+
+	public double getExcrementPercentage() {
+		return this.excrementPercentage.get();
+	}
+	
+	
+	public double getLifeExpectancy() {
+		return this.lifeExpectancy;
+	}
+	
+	public String getNaturalEnemyType() {
+		return this.naturalEnemyType;
+	}
+	
+	public String getType() {
+		return this.type;
+	}
+	
+
+
 }
