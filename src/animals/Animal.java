@@ -10,7 +10,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 /**
- * Represents an Animal. Parameters update as age increases. Superclass for other animal types
+ * Represents an Animal. Parameters update as age increases. Superclass for other animal types.
  * @author Erik Shea
  *
  */
@@ -57,7 +57,7 @@ public class Animal {
         this.health.setValue((2*Math.random()+3)/5 * this.maxHealth.get()); // random health between 80% and 100%
 	}
 
-	/*
+	/**
 	 * Use listeners to automatically update inter-dependent properties.
 	 */
 	public void setUpListeners()
@@ -86,7 +86,7 @@ public class Animal {
     		}
     		
     		// if age exceeds life expectancy, set to dead
-    		if (this.lifeExpectancy < newAge.doubleValue() ) {	// if too old
+    		if (this.lifeExpectancy < newAge.doubleValue() ) {	
     			this.potentialCauseOfDeath = "age";
     			this.alive.set(false);
     		}
@@ -132,7 +132,7 @@ public class Animal {
 	/**
 	 * Create a new Cat inheriting traits from both the caller, and a partner
 	 * @param partner
-	 * @return
+	 * @return baby Animal
 	 */
 	public<T extends Animal> T reproduceWith(T partner) {
 		try {
@@ -160,7 +160,7 @@ public class Animal {
 	
 	
 	
-	/*
+	/**
 	 * Change health by ammount (negative or positive)
 	 */
 	public void changeHealthBy(double ammount)
@@ -168,8 +168,9 @@ public class Animal {
 		this.health.setValue(this.health.get() + ammount);
 	}
 	
-	/*
-	 * Change health by ammount (negative or positive), with a reason for the change (to keep track of cause of death).
+	/**
+	 * Change health by ammount, with a reason for the change (to keep track of cause of death).
+	 * @param ammount value to change by, positive or negative
 	 */
 	public void changeHealthBy(double ammount,String reason)
 	{
@@ -178,8 +179,9 @@ public class Animal {
 	}
 	
 	
-	/*
-	 * Change energy by ammount (negative or positive)
+	/**
+	 * Change energy by ammount 
+	 * @param ammount value to change by, positive or negative
 	 */
 	public void changeEnergyBy(int ammount)
 	{
@@ -189,7 +191,8 @@ public class Animal {
 
 	
 	/*
-	 * Change age by ammount (negative or positive)
+	 * Change age by ammount 
+	 * @param ammount value to change by, positive or negative
 	 */
 	public void changeAgeBy(double ammount)
 	{
@@ -198,8 +201,7 @@ public class Animal {
 	
 	
 	/**
-	 *  Find out age at which animal stops growing
-	 * @return
+	 * @return age at which animal stops growing
 	 */
 	public int getMatureAge()
 	{
@@ -207,8 +209,7 @@ public class Animal {
 	}
 
 	/**
-	 * Size at birth
-	 * @return
+	 * @return Size at birth
 	 */
 	public  double getBaseSize()
 	{
@@ -232,7 +233,7 @@ public class Animal {
 	
 	/**
 	 * Sets current excrement level as a percentage. Negative values are reset to 0.
-	 * @param p 
+	 * @param p value to change by, positive or negative
 	 */
 	public void setExcrementPercentage(double p) {
 		if (p < 0) {
@@ -241,7 +242,10 @@ public class Animal {
 		
 		this.excrementPercentage.setValue(p);
 	}
-	
+	/**
+	 * Changes excrement percentage by a value
+	 * @param p value to change by, positive or negative
+	 */
 	public void changeExcrementPercentageBy(double p) {
 		this.excrementPercentage.setValue(this.excrementPercentage.get() + p);
 	}
@@ -298,6 +302,19 @@ public class Animal {
     {
     	return this.potentialCauseOfDeath;
     }
+    
+	public double getLifeExpectancy() {
+		return this.lifeExpectancy;
+	}
+	
+	public String getNaturalEnemyType() {
+		return this.naturalEnemyType;
+	}
+	
+	public String getType() {
+		return this.type;
+	}
+	
     
     // Getters for observable properties. Always return final to protect against modification
     
@@ -370,19 +387,4 @@ public class Animal {
 		return this.excrementPercentage.get();
 	}
 	
-	
-	public double getLifeExpectancy() {
-		return this.lifeExpectancy;
-	}
-	
-	public String getNaturalEnemyType() {
-		return this.naturalEnemyType;
-	}
-	
-	public String getType() {
-		return this.type;
-	}
-	
-
-
 }
