@@ -14,7 +14,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @author Erik Shea
  *
  */
-public class Animal {
+public abstract class Animal {
 	protected String name;
 	protected double color;	// Color, as a hue variation from base picture (-1 to 1)
 	protected String type;
@@ -97,7 +97,9 @@ public class Animal {
     		if ( newHealth.doubleValue() <= 0 ) {
     			this.alive.set(false);
     		}
+    		
     	});
+    	
     	
     	// maxHealth and maxEnergy increase with size.
     	this.size.addListener((arg, oldSize, newSize) -> {
@@ -165,7 +167,7 @@ public class Animal {
 	 */
 	public void changeHealthBy(double ammount)
 	{
-		this.health.setValue(this.health.get() + ammount);
+		this.setHealth(this.health.get() + ammount);
 	}
 	
 	/**
@@ -174,7 +176,7 @@ public class Animal {
 	 */
 	public void changeHealthBy(double ammount,String reason)
 	{
-		this.health.setValue(this.health.get() + ammount);
+		this.setHealth(this.health.get() + ammount);
 		this.potentialCauseOfDeath = reason;
 	}
 	
@@ -185,7 +187,7 @@ public class Animal {
 	 */
 	public void changeEnergyBy(int ammount)
 	{
-		this.energy.setValue(this.energy.get() + ammount);
+		this.setEnergy(this.energy.get() + ammount);
 	}
 	
 
@@ -222,13 +224,25 @@ public class Animal {
 	 * @param h
 	 */
 	public void setHealth(double h) {
-		if (h <= this.maxHealth.get()) {
+		if (h <= this.getMaxHealth()) {
 			this.health.setValue(h);
 		} else {
 			this.health.setValue(this.maxHealth.get());
 		}
 	}
 	
+	
+	/**
+	 * Sets energy, if above max energy resets to max health
+	 * @param h
+	 */
+	public void setEnergy(double e) {
+		if (e <= this.getMaxEnergy()) {
+			this.energy.setValue(e);
+		} else {
+			this.energy.setValue(this.getMaxEnergy());
+		}
+	}
 	
 	
 	/**

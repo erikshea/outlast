@@ -30,6 +30,7 @@ public class ImitamagochiMain extends Application {
 			scene.getStylesheets().add(this.getClass().getResource("contextMenus.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Imitamagotchi");
+			primaryStage.setResizable(false); // Disable window resizing. TODO: implement GUI scaling
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

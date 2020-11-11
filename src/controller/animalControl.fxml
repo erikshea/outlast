@@ -71,7 +71,13 @@
 								<Tooltip text="Perform exercise." />
 							</tooltip>
 						</Button>
-
+						
+						<Button styleClass="clean">
+							<tooltip>
+								<Tooltip text="Clean self." />
+							</tooltip>
+						</Button>
+						
 						<StackPane>
 							<children>
 								<ProgressIndicator fx:id="excrementIndicator" />
@@ -88,7 +94,7 @@
 								<Tooltip text="See friend." />
 							</tooltip>
 							<contextMenu>
-								<ContextMenu fx:id="reproduceMenu" />
+								<ContextMenu fx:id="seeFriendMenu" />
 							</contextMenu>
 						</Button>
 
@@ -97,7 +103,7 @@
 								<Tooltip text="Reproduce." />
 							</tooltip>
 							<contextMenu>
-								<ContextMenu fx:id="seeFriendMenu" />
+								<ContextMenu fx:id="reproduceMenu" />
 							</contextMenu>
 						</Button>
 

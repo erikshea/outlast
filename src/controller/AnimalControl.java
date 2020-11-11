@@ -79,6 +79,7 @@ public class AnimalControl<T extends Animal> extends HBox {
         });
 
     	this.addGuiListeners();	// Bind GUI elements to animal properties
+    	this.addListeners();	// Listeners for actions and events (death..).
     }
 
     /**
@@ -180,15 +181,12 @@ public class AnimalControl<T extends Animal> extends HBox {
     		actionButton.getTooltip().setShowDelay(Duration.millis(300));
     		actionButton.setText(null);	// no label
     		// need file: in front of path for setStyle to apply background image
-    		String newButtonStyle 	= "-fx-background-image: url(\"file:../../resources/images/actions/" + animal.getType() + "/" + actionName + ".png\")"
+    		String newButtonStyle 	= "-fx-background-image: url(\"file:../../resources/images/actions/" + animal.getType()  + "/" + actionName + ".png\")"
     								+ actionButton.getStyle();
     		actionButton.setStyle(newButtonStyle);
     		actionButton.setOnMouseEntered( e-> { actionButton.setOpacity(0.3); }); // reduce opacity on hover in
-    		
     		actionButton.setOnMouseExited( e-> { actionButton.setOpacity(1); }); // restore opacity on hover out
-    		
-    		// execute action on click
-    		actionButton.setOnMousePressed( e-> { this.executeAction(actionName, actionButton); }
+    		actionButton.setOnMousePressed( e-> { this.executeAction(actionName, actionButton); } // execute action on click
     		);
     	}
     }
@@ -253,12 +251,13 @@ public class AnimalControl<T extends Animal> extends HBox {
     		this.excrementIndicator.progressProperty().setValue((this.animal.getExcrementPercentage()/100));
     	});
 
-		// if mask state changes
-    	this.animal.getHasMaskProperty().addListener((arg, oldMaskState, newMaskState) -> {
-    		// toggle mask
-    		this.animalMask.setVisible(newMaskState);
-    	});
+
+
     	
+	}
+	
+	public void addListeners() {
+		
     	// if animal has died
     	this.animal.getIsAliveProperty().addListener((arg, oldAliveState, newAliveState) -> {
     		if (!newAliveState)
@@ -285,14 +284,35 @@ public class AnimalControl<T extends Animal> extends HBox {
     		}
     	});
     	
+		// if mask state changes
+    	this.animal.getHasMaskProperty().addListener((arg, oldMaskState, newMaskState) -> {
+    		// toggle mask
+    		this.animalMask.setVisible(newMaskState);
+    	});
+    	
+    	// energy-dependent elements
+    	this.animal.getEnergyProperty().addListener((arg, oldEnergy, newEnergy) -> {
+    		// portion of energy bar filled
+
+    		if (newEnergy.doubleValue() == this.getAnimal().getMaxEnergy()) {
+    			this.mainController.getConsole().printLine(this.getAnimal().getName() + " jumps in joy!");
+				this.animal.changeEnergyBy(-5);
+	    		this.animal.changeHealthBy(5);
+    		} else if (newEnergy.doubleValue() <= 0) {
+    			this.mainController.getConsole().printLine(this.getAnimal().getName() + " is depressed.");
+				this.animal.changeEnergyBy(5);
+	    		this.animal.changeHealthBy(-10);
+    		}
+    		
+    	});
+    	
 	}
 	
 	/**
 	 * Sets a reference to the main controller (for console, and to communicate with other controllers)
 	 * @param c main window controller
 	 */
-	void setMainController(MainWindowControl c)
-	{
+	void setMainController(MainWindowControl c){
 		this.mainController = c;
 	}
 	
@@ -308,7 +328,7 @@ public class AnimalControl<T extends Animal> extends HBox {
 		
 		for (AnimalControl<T> potentialFriend : animalRegions)	// Loop trough animals to find potential friends
 		{
-			if (potentialFriend.getAnimal().getType() != this.animal.getNaturalEnemyType()) {	// No menu item for natural enemies
+			if (potentialFriend.getAnimal().getType() != this.animal.getNaturalEnemyType() && !this.equals(potentialFriend)) {	// No menu item for natural enemies or self
 				MenuItem animalMenuItem = this.getMenuItemForAnimal(potentialFriend); 	// redeclare at each loop for event's local method
 				
 				animalMenuItem.setOnAction( e-> {
@@ -320,10 +340,8 @@ public class AnimalControl<T extends Animal> extends HBox {
 			    });
 				
 				this.seeFriendMenu.getItems().add(animalMenuItem);	// add to friends menu
-			}
-				
+			}	
 		}
-		
 		this.seeFriendMenu.show(originator, Side.BOTTOM, 0, 0);	// show menu below button
 	}
 	
@@ -353,15 +371,11 @@ public class AnimalControl<T extends Animal> extends HBox {
 						
 						this.mainController.getAnimalsRegion().addAnimalControl(baby);	// Add to region
 					}
-					
 			    });
 				
 				this.reproduceMenu.getItems().add(animalMenuItem);	// Add to potential mates menu
 			}
-			
 		}
-		
-		
 		this.reproduceMenu.show(originator, Side.BOTTOM, 0, 0);	// show menu below button
 	}
 	
