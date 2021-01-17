@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Slider?>
+
+<fx:root type="javafx.scene.layout.HBox"
+	xmlns:fx="http://javafx.com/fxml" styleClass="animal-region"
+	stylesheets="@animalControl.css">
+	<children>
+		<HBox>
+			<Slider fx:id="colorSlider" min="-1" max="1" value="0" orientation="vertical"/>
+			<StackPane fx:id="animalProfile">
+				<ImageView fx:id="animalPortrait"/>
+				<ImageView fx:id="animalMask"/>
+			</StackPane>
+		</HBox>
+		<VBox styleClass="animal-info">
+			<children>
+				<Label fx:id="animalNameInfo" />
+				<Label fx:id="animalTypeInfo" />
+
+				<HBox styleClass="animal-age-region">
+					<children>
+						<Label fx:id="animalSize" />
+						<ProgressIndicator fx:id="ageIndicator" />
+						<Label fx:id="animalAge" />
+						<Label text="years" />
+					</children>
+				</HBox>
+			</children>
+		</VBox>
+		<VBox styleClass="right-region">
+			<children>
+				<HBox styleClass="animal-action-bar">
+					<children>
+					
+						<Button styleClass="eat">
+							<tooltip>
+								<Tooltip text="Eat." />
+							</tooltip>
+						</Button>
+
+						<Button styleClass="sleep">
+							<tooltip>
+								<Tooltip text="Sleep." />
+							</tooltip>
+						</Button>
+
+						<Button styleClass="smoke">
+							<tooltip>
+								<Tooltip text="Smoke." />
+							</tooltip>
+						</Button>
+
+						<Button styleClass="mask">
+							<tooltip>
+								<Tooltip text="Toggle mask." />
+							</tooltip>
+						</Button>
+
+						<Button styleClass="exercise">
+							<tooltip>
+								<Tooltip text="Perform exercise." />
+							</tooltip>
+						</Button>
+						
+						<Button styleClass="clean">
+							<tooltip>
+								<Tooltip text="Clean self." />
+							</tooltip>
+						</Button>
+						
+						<StackPane>
+							<children>
+								<ProgressIndicator fx:id="excrementIndicator" />
+								<Button styleClass="bathroom">
+									<tooltip>
+										<Tooltip text="Use the bathroom." />
+									</tooltip>
+								</Button>
+							</children>
+						</StackPane>
+
+						<Button styleClass="seeFriend,">
+							<tooltip>
+								<Tooltip text="See friend." />
+							</tooltip>
+							<contextMenu>
+								<ContextMenu fx:id="seeFriendMenu" />
+							</contextMenu>
+						</Button>
+
+						<Button styleClass="reproduce,">
+							<tooltip>
+								<Tooltip text="Reproduce." />
+							</tooltip>
+							<contextMenu>
+								<ContextMenu fx:id="reproduceMenu" />
+							</contextMenu>
+						</Button>
+
+					</children>
+				</HBox>
+				<ProgressBar fx:id="healthBar" />
+				<ProgressBar fx:id="energyBar" />
+			</children>
+		</VBox>
+
+	</children>
+
+</fx:root>

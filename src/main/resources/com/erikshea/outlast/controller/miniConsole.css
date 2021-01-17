@@ -1,0 +1,5 @@
+#consolePane {
+	-fx-padding: 6px;
+	-fx-background-image: url("/assets/images/backgrounds/console/console.png");
+	-fx-pref-width: 730;
+}

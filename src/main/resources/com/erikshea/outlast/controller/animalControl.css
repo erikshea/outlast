@@ -1,0 +1,177 @@
+
+
+.animal-region{
+	-fx-background-color: #ffffff;
+	
+}
+@font-face {
+    src: url("/assets/fonts/Ubuntu-Bold.ttf")
+}
+
+@font-face {
+    src: url("/assets/fonts/Ubuntu-Regular.ttf")
+}
+#animalProfile{
+	-fx-alignment: bottom-left;
+	
+	-fx-pref-width: 145px;
+}
+
+#animalPortrait{
+}
+
+.animal-info{
+	-fx-background-position: right top;
+	-fx-background-repeat: no-repeat;
+	-fx-background-color: #ffffff;
+    -fx-padding: 0 40 0 0;	
+	-fx-alignment: baseline-right;
+	-fx-pref-width: 180px;
+}
+
+
+
+.animal-age-region{
+	-fx-alignment: top-right;
+}
+
+#animalNameInfo{
+    -fx-font-family: Ubuntu;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0 0 10;
+}
+
+#animalTypeInfo{
+    -fx-font-family: Ubuntu;
+    -fx-font-size: 15px;
+    -fx-padding: 0 0 0 10;
+}
+
+.animal-info #animalTypeInfo{
+	-fx-text-fill : #000000;
+}
+
+
+.cat #animalNameInfo{
+	-fx-text-fill : #ff9900;
+}
+.dragon #animalNameInfo{
+	-fx-text-fill : #00d437;
+}
+
+.dog #animalNameInfo{
+	-fx-text-fill : #ff002b;
+}
+.monkey #animalNameInfo{
+	-fx-text-fill : #0098ff;
+}
+
+.cat .animal-info{
+	-fx-background-image: url("/assets/images/backgrounds/cat/transition.png");
+}
+
+.dog .animal-info{
+	-fx-background-image: url("/assets/images/backgrounds/dog/transition.png");
+}
+
+.dragon .animal-info{
+	-fx-background-image: url("/assets/images/backgrounds/dragon/transition.png");
+}
+
+.monkey .animal-info{
+	-fx-background-image: url("/assets/images/backgrounds/monkey/transition.png");
+}
+
+.cat .right-region{
+	-fx-background-image: url("/assets/images/backgrounds/cat/repeat.png");
+}
+
+.dog .right-region{
+	-fx-background-image: url("/assets/images/backgrounds/dog/repeat.png");
+}
+
+.dragon .right-region{
+	-fx-background-image: url("/assets/images/backgrounds/dragon/repeat.png");
+}
+
+.monkey .right-region{
+	-fx-background-image: url("/assets/images/backgrounds/monkey/repeat.png");
+}
+
+.right-region{
+	-fx-background-repeat: repeat;
+	-fx-padding: 0 20 0 5;
+}
+
+
+.animal-action-bar{
+	-fx-padding: 10 10 0 0;	
+	-fx-spacing: 8;
+}
+
+.animal-action-bar Button{
+	-fx-pref-height: 40px;
+	-fx-min-width: 40px;
+	-fx-background-color: transparent; /* will use image set in controller */
+}
+
+
+.animal-action-bar StackPane {
+	-fx-alignment: top-right;
+}
+
+ProgressBar {
+	-fx-height: 10px;
+}
+#healthBar{
+	-fx-max-height: 20px;
+	-fx-accent: red;
+}
+
+#energyBar{
+	-fx-max-height: 20px;
+}
+
+#animalAge{
+	
+}
+.animal-age-region  {
+    -fx-padding: 10 0 0 0;
+}
+
+.animal-age-region Label{
+	-fx-text-fill : #9f9f9f;
+    -fx-font-family: Ubuntu;
+    -fx-font-size: 12px;
+    -fx-padding: 4 0 0 3;
+}
+
+#animalAge{
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-padding: -5 0 0 5;
+}
+
+#ageIndicator .percentage {
+    -fx-fill:null;
+}
+
+#ageIndicator  {
+	-fx-max-width: 30;
+    -fx-padding: 0 -3 0 0;
+	-fx-accent: #9f9f9f;
+}
+
+#excrementIndicator {
+	-fx-max-width: 15;
+	-fx-accent: #714223;
+}
+
+#excrementIndicator .percentage { /* hide percentage label */
+    -fx-fill:null;
+}
+
+#colorSlider{
+	-fx-padding: 0 0 0 5;
+}
